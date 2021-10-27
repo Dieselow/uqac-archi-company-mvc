@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "archi-company-mvc", "archi-company-mvc\archi-company-mvc.csproj", "{93D81AB2-A0B8-4C2C-8130-9D66BD8CAB4D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93D81AB2-A0B8-4C2C-8130-9D66BD8CAB4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93D81AB2-A0B8-4C2C-8130-9D66BD8CAB4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93D81AB2-A0B8-4C2C-8130-9D66BD8CAB4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93D81AB2-A0B8-4C2C-8130-9D66BD8CAB4D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
