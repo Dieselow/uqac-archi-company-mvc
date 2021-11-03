@@ -1,0 +1,22 @@
+version: "3.0"
+
+services:
+  db:
+    container_name: archi-company-db
+    restart: unless-stopped
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password
+      - MSSQL_PID=Express
+    ports:
+      - 1433:1433
+    volumes:
+      - ./database:/var/opt/mssql/data
+    networks:
+      - archi-company-network
+
+networks:
+  archi-company-network:
+    driver: bridge
+    name: archi-company-network
