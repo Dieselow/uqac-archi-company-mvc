@@ -13,6 +13,6 @@ Connexion String :
 
 Creation de la database :
 
-````CREATE DATABASE archi;```
+```CREATE DATABASE archi;```
 
 Ensuite lancer l'application.
