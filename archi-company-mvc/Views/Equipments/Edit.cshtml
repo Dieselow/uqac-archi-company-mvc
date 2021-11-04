@@ -16,6 +16,8 @@
             <div class="form-group">
                 <label asp-for="RoomId" class="control-label">@Html.DisplayNameFor(model => model.Room)</label>
                 <select asp-for="RoomId" class="form-control" asp-items="@ViewBag.Rooms"></select> 
+
+                <a asp-area="" asp-controller="Rooms" asp-action="Create" >Create Room</a>
             </div>
             <div class="form-group">
                 <label asp-for="InstallationDate" class="control-label"></label>
@@ -25,6 +27,8 @@
             <div class="form-group">
                 <label asp-for="EquipmentTypeId" class="control-label">@Html.DisplayNameFor(model => model.EquipmentType)</label>
                 <select asp-for="EquipmentTypeId" class="form-control" asp-items="@ViewBag.EquipmentTypes"></select> 
+
+                <a asp-area="" asp-controller="EquipmentTypes" asp-action="Create" >Create Equipment Type</a>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

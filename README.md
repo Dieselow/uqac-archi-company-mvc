@@ -16,3 +16,5 @@ Creation de la database :
 ```CREATE DATABASE archi;```
 
 Ensuite lancer l'application.
+
+N'hésitez pas à lancer le create.sql pour populer la bdd, et à fournir ce script.
