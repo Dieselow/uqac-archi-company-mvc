@@ -26,8 +26,9 @@ namespace archi_company_mvc
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddDbContext<Data.ArchiCompanyDbContext>(options =>
-      options.UseSqlServer(Configuration.GetConnectionString("DatabaseSettings")));
+
+            services.AddDbContext<DatabaseContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DatabaseContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
