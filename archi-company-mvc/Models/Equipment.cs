@@ -5,6 +5,7 @@ namespace archi_company_mvc.Models
 {
     public class Equipment
     {
+        [Key]
         public int Id { get; set; }
 
         [DataType(DataType.Date)]

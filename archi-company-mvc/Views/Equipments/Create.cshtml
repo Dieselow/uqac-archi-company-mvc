@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="RoomId" class="control-label">@Html.DisplayNameFor(model => model.Room)</label>
-                <select asp-for="RoomId" asp-items="@ViewBag.Rooms"></select> 
+                <select asp-for="RoomId" class="form-control" asp-items="@ViewBag.Rooms"></select> 
             </div>
             <div class="form-group">
                 <label asp-for="InstallationDate" class="control-label"></label>
@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="EquipmentTypeId" class="control-label">@Html.DisplayNameFor(model => model.EquipmentType)</label>
-                <select asp-for="EquipmentTypeId" asp-items="@ViewBag.EquipmentTypes"></select> 
+                <select asp-for="EquipmentTypeId" class="form-control" asp-items="@ViewBag.EquipmentTypes"></select> 
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

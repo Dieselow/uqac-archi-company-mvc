@@ -58,6 +58,12 @@ namespace archi_company_mvc
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                    var context = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
+                    context.Database.EnsureCreated();
+            }
         }
     }
 }
