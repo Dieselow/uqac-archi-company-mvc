@@ -1,0 +1,16 @@
+@model IEnumerable<archi_company_mvc.Models.ContextLink>
+
+
+@if (Model.Any())
+{
+<nav class = "SideBar navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <ul class="navbar-nav flex-grow-1">
+        @foreach (var contextLink in Model)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="@contextLink.LinkUrl"> @contextLink.LinkName </a>
+            </li>
+        }
+    </ul>
+</nav> 
+}
