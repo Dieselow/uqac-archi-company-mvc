@@ -16,3 +16,8 @@ Creation de la database :
 ```CREATE DATABASE archi;```
 
 Ensuite lancer l'application.
+
+Pour voir les tables 
+Connexion String : 
+
+```Data Source=.;Initial Catalog=archi;User ID=sa;Password=Password1```
