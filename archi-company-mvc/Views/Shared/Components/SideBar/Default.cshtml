@@ -1,0 +1,40 @@
+@model IEnumerable<archi_company_mvc.Models.ContextLink>
+
+
+@if (Model.Any())
+{
+<script>
+window.addEventListener("DOMContentLoaded", function() {
+ 
+    var SideBar = document.querySelector("#SideBar");
+
+    SideBar.addEventListener("mouseover", openNav);
+    SideBar.addEventListener("mouseout", closeNav);
+
+    function openNav() {
+    document.getElementById("SideBar").style.width = "200px";
+    document.getElementById("SideBarMenuIcon").style.display = "none";
+    document.getElementById("SideBarLinks").style.display = "block";
+    }
+    function closeNav() {
+    document.getElementById("SideBarLinks").style.display = "none";
+    document.getElementById("SideBar").style.width = "60px";
+    document.getElementById("SideBarMenuIcon").style.display = "block";
+    }
+}, false);
+</script>
+
+
+
+<nav class='sidebar navbar-left bg-white border-rght box-shadow' id="SideBar">
+    <div id = "SideBarMenuIcon">☰</div>
+    <ul id="SideBarLinks">
+        @foreach (var contextLink in Model)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="@contextLink.LinkUrl"> @contextLink.LinkName <span class="link-spanner"></span></a>
+            </li>
+        }
+    </ul>
+</nav>
+}
