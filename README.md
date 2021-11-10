@@ -5,19 +5,10 @@ Lancer docker pour avoir le serveur BD
 
 ```docker-compose up```
 
-Se connecter à la DB et créer la database archi
+Lancer l'application.
 
-Connexion String : 
+Se connecter à la DB ensuite :
 
-```Data Source=.;Initial Catalog=master;User ID=sa;Password=Password1```
-
-Creation de la database :
-
-```CREATE DATABASE archi;```
-
-Ensuite lancer l'application.
-
-Pour voir les tables 
 Connexion String : 
 
 ```Data Source=.;Initial Catalog=archi;User ID=sa;Password=Password1```
