@@ -26,7 +26,7 @@ namespace archi_company_mvc.ViewComponents
             List<ContextLink> itemsList = new List<ContextLink>();
             switch (controllerName)
             {
-                case "Equipments": case "EquipmentType": case "Rooms":
+                case "Equipments": case "EquipmentTypes": case "Rooms":
                     itemsList.Add(new ContextLink("./Equipments", "Equipments"));
                     itemsList.Add(new ContextLink("./Rooms", "Rooms"));
                     itemsList.Add(new ContextLink("./EquipmentTypes", "Equipment Types"));
