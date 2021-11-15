@@ -52,14 +52,19 @@
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.Address)
-                        @Html.PasswordFor(m => m.Address, new { @class = "form-control", @placeholder = "Address" })
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Address" })
                         @Html.ValidationMessageFor(m => m.Address, "", new { @class = "badge badge-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.PhoneNumber)
-                        @Html.PasswordFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number" })
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number" })
                         @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "badge badge-danger" })
                     </div>
+                     <div class="form-group">
+                                            @Html.LabelFor(m => m.LicenceNumber)
+                                            @Html.TextBoxFor(m => m.LicenceNumber, new { @class = "form-control", @placeholder = "Licence Number" })
+                                            @Html.ValidationMessageFor(m => m.LicenceNumber, "", new { @class = "badge badge-danger" })
+                                        </div>
                     <div class="form-group">
                         <input type="submit" name="submit" class="btn btn-danger" value="Register"/>
                     </div>
