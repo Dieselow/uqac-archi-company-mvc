@@ -1,29 +1,22 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace archi_company_mvc.Controllers
 {
-    public class RegisterUserController: Controller
+    public class LoginController: Controller
     {
         private readonly DatabaseContext _context;
 
-        public RegisterUserController(DatabaseContext context)
+        public LoginController(DatabaseContext context)
         {
             _context = context;
-        }
-
-        public ActionResult Register()
-        {
-            return View();
         }
         public ActionResult Login()
         {
             return View();
         }
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(string email,string password)
@@ -43,37 +36,6 @@ namespace archi_company_mvc.Controllers
             }
             return View();
         }
-        //POST: Register
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(User user)
-        {
-            if (ModelState.IsValid)
-            {
-                var check = _context.Users.FirstOrDefault(s => s.Email == user.Email);
-                if (check == null)
-                {
-                    user.Password = GetMd5(user.Password);
-                    _context.Users.Add(user);
-                    _context.SaveChanges();
-                    return RedirectToAction(actionName: "Index", controllerName: "Home");
-                }
-                ViewBag.error = "Email already exists";
-                return View();
-
-
-            }
-            return View();
-
-
-        }
-        
-        //Logout
-        public ActionResult Logout()
-        {
-            return RedirectToAction("Login");
-        }
-        
         private static string GetMd5(string str)
         {
             MD5 md5 = new MD5CryptoServiceProvider();
