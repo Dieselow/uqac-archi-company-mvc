@@ -1,11 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-    public class DatabaseContext : DbContext
+namespace archi_company_mvc.Data
+{
+    public class DatabaseContext : IdentityDbContext<User>
     {
         public DatabaseContext (DbContextOptions<DatabaseContext> options)
             : base(options)
@@ -30,3 +31,4 @@ using archi_company_mvc.Models;
 
         public DbSet<User> Users { get; set; }
     }
+}

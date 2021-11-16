@@ -1,10 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace archi_company_mvc.Models
 {
+    [Table("AspNetUsers")]
     public class User: IdentityUser
     {
         [Display(Name="First Name")]

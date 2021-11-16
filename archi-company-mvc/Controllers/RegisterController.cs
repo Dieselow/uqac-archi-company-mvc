@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using archi_company_mvc.Data;
 using archi_company_mvc.Helpers;
 using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Mvc;
