@@ -25,7 +25,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Secretaries/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -85,7 +85,7 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Secretary secretary)
+        public async Task<IActionResult> Edit(string id, [Bind("Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Secretary secretary)
         {
             if (id != secretary.Id)
             {
@@ -116,7 +116,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Secretaries/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
             {
@@ -144,7 +144,7 @@ namespace archi_company_mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SecretaryExists(int id)
+        private bool SecretaryExists(string id)
         {
             return _context.Secretary.Any(e => e.Id == id);
         }

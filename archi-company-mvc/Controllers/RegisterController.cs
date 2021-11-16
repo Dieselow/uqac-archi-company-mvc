@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using archi_company_mvc.Helpers;
 using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,7 +41,7 @@ namespace archi_company_mvc.Controllers
                 var check = _context.Patient.FirstOrDefault(s => s.Email == patient.Email);
                 if (check == null)
                 {
-                    patient.Password = GetMd5(patient.Password);
+                    patient.Password = SecurityHelper.GetMd5(patient.Password);
                     _context.Patient.Add(patient);
                     _context.SaveChanges();
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
@@ -63,7 +64,7 @@ namespace archi_company_mvc.Controllers
                 var check = _context.Secretary.FirstOrDefault(s => s.Email == secretary.Email);
                 if (check == null)
                 {
-                    secretary.Password = GetMd5(secretary.Password);
+                    secretary.Password = SecurityHelper.GetMd5(secretary.Password);
                     _context.Secretary.Add(secretary);
                     _context.SaveChanges();
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
@@ -86,7 +87,7 @@ namespace archi_company_mvc.Controllers
                 var check = _context.Caregiver.FirstOrDefault(s => s.Email == caregiver.Email);
                 if (check == null)
                 {
-                    caregiver.Password = GetMd5(caregiver.Password);
+                    caregiver.Password = SecurityHelper.GetMd5(caregiver.Password);
                     _context.Caregiver.Add(caregiver);
                     _context.SaveChanges();
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
@@ -104,19 +105,5 @@ namespace archi_company_mvc.Controllers
         {
             return RedirectToAction("Login");
         }**/
-        private static string GetMd5(string str)
-        {
-            MD5 md5 = new MD5CryptoServiceProvider();
-            byte[] fromData = Encoding.UTF8.GetBytes(str);
-            byte[] targetData = md5.ComputeHash(fromData);
-            string byte2String = null;
-
-            for (int i = 0; i < targetData.Length; i++)
-            {
-                byte2String += targetData[i].ToString("x2");
-            }
-
-            return byte2String;
-        }
     }
 }

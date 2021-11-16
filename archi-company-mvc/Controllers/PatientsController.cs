@@ -26,7 +26,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Patients/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -94,7 +94,7 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PrimaryDoctorId,HealthFileId,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Patient patient)
+        public async Task<IActionResult> Edit(string id, [Bind("PrimaryDoctorId,HealthFileId,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Patient patient)
         {
             if (id != patient.Id)
             {
@@ -127,7 +127,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Patients/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
             {
@@ -157,7 +157,7 @@ namespace archi_company_mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PatientExists(int id)
+        private bool PatientExists(string id)
         {
             return _context.Patient.Any(e => e.Id == id);
         }

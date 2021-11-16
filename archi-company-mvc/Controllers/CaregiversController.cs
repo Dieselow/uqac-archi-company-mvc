@@ -25,7 +25,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -85,7 +85,7 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LicenceNumber,Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Caregiver caregiver)
+        public async Task<IActionResult> Edit(string id, [Bind("LicenceNumber,Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Caregiver caregiver)
         {
             if (id != caregiver.Id)
             {
@@ -116,7 +116,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
             {
@@ -144,7 +144,7 @@ namespace archi_company_mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CaregiverExists(int id)
+        private bool CaregiverExists(string id)
         {
             return _context.Caregiver.Any(e => e.Id == id);
         }
