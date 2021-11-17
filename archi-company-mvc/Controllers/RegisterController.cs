@@ -1,9 +1,12 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+using archi_company_mvc.Constants;
 using archi_company_mvc.Data;
 using archi_company_mvc.Helpers;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace archi_company_mvc.Controllers
@@ -11,10 +14,12 @@ namespace archi_company_mvc.Controllers
     public class RegisterController : Controller
     {
         private readonly DatabaseContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public RegisterController(DatabaseContext context)
+        public RegisterController(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public ActionResult RegisterPatient()
@@ -35,7 +40,7 @@ namespace archi_company_mvc.Controllers
         //POST: Register Patient
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult RegisterPatient(Patient patient)
+        public async Task<ActionResult> RegisterPatient(Patient patient)
         {
             if (ModelState.IsValid)
             {
@@ -44,7 +49,8 @@ namespace archi_company_mvc.Controllers
                 {
                     patient.Password = SecurityHelper.GetMd5(patient.Password);
                     _context.Patient.Add(patient);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
+                    await _userManager.AddToRoleAsync(patient, Roles.Patient.ToString());
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
                 }
 
@@ -58,7 +64,7 @@ namespace archi_company_mvc.Controllers
         //POST: Register Secretary
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult RegisterSecretary(Secretary secretary)
+        public async Task<ActionResult> RegisterSecretary(Secretary secretary)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +73,8 @@ namespace archi_company_mvc.Controllers
                 {
                     secretary.Password = SecurityHelper.GetMd5(secretary.Password);
                     _context.Secretary.Add(secretary);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
+                    await _userManager.AddToRoleAsync(secretary, Roles.Secretary.ToString());
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
                 }
 
@@ -81,7 +88,7 @@ namespace archi_company_mvc.Controllers
         //POST: Register Caregiver
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult RegisterCaregiver(Caregiver caregiver)
+        public async Task<ActionResult> RegisterCaregiver(Caregiver caregiver)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +97,8 @@ namespace archi_company_mvc.Controllers
                 {
                     caregiver.Password = SecurityHelper.GetMd5(caregiver.Password);
                     _context.Caregiver.Add(caregiver);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
+                    await _userManager.AddToRoleAsync(caregiver, Roles.Caregiver.ToString());
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
                 }
 

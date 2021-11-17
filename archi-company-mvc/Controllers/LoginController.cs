@@ -3,12 +3,15 @@ using System.Security.Cryptography;
 using System.Text;
 using archi_company_mvc.Data;
 using archi_company_mvc.Helpers;
+using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace archi_company_mvc.Controllers
 {
     public class LoginController: Controller
     {
+        private readonly SignInManager<User> _signInManager;
         private readonly DatabaseContext _context;
 
         public LoginController(DatabaseContext context)
@@ -25,8 +28,6 @@ namespace archi_company_mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-
-
                 var fPassword = SecurityHelper.GetMd5(password);
                 var data =_context.Users.Where(s => s.Email.Equals(email) && s.Password.Equals(fPassword)).ToList();
                 if(data.Capacity > 0)
