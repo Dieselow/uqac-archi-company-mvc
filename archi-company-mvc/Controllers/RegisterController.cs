@@ -47,8 +47,8 @@ namespace archi_company_mvc.Controllers
                 var check = _context.Patient.FirstOrDefault(s => s.Email == patient.Email);
                 if (check == null)
                 {
-                    patient.Password = SecurityHelper.GetMd5(patient.Password);
-                    _context.Patient.Add(patient);
+                    patient.PasswordHash = _userManager.PasswordHasher.HashPassword(patient,patient.Password);
+                    await _userManager.CreateAsync(patient,patient.Password);
                     await _context.SaveChangesAsync();
                     await _userManager.AddToRoleAsync(patient, Roles.Patient.ToString());
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
@@ -71,8 +71,8 @@ namespace archi_company_mvc.Controllers
                 var check = _context.Secretary.FirstOrDefault(s => s.Email == secretary.Email);
                 if (check == null)
                 {
-                    secretary.Password = SecurityHelper.GetMd5(secretary.Password);
-                    _context.Secretary.Add(secretary);
+                    secretary.PasswordHash = _userManager.PasswordHasher.HashPassword(secretary,secretary.Password);
+                    await _userManager.CreateAsync(secretary,secretary.Password);
                     await _context.SaveChangesAsync();
                     await _userManager.AddToRoleAsync(secretary, Roles.Secretary.ToString());
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
@@ -95,8 +95,8 @@ namespace archi_company_mvc.Controllers
                 var check = _context.Caregiver.FirstOrDefault(s => s.Email == caregiver.Email);
                 if (check == null)
                 {
-                    caregiver.Password = SecurityHelper.GetMd5(caregiver.Password);
-                    _context.Caregiver.Add(caregiver);
+                    caregiver.PasswordHash = _userManager.PasswordHasher.HashPassword(caregiver,caregiver.Password);
+                    await _userManager.CreateAsync(caregiver,caregiver.Password);
                     await _context.SaveChangesAsync();
                     await _userManager.AddToRoleAsync(caregiver, Roles.Caregiver.ToString());
                     return RedirectToAction(actionName: "Index", controllerName: "Home");

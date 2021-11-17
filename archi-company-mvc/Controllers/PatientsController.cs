@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace archi_company_mvc.Controllers
 {
@@ -18,7 +19,7 @@ namespace archi_company_mvc.Controllers
         {
             _context = context;
         }
-
+        
         // GET: Patients
         public async Task<IActionResult> Index()
         {
