@@ -48,8 +48,9 @@ namespace archi_company_mvc.Controllers
         // GET: Patients/Create
         public IActionResult Create()
         {
-            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id");
-            ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "Id");
+            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions");
+            //ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Patient", patient.HealthFileId);
+            ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "LastName");
             return View();
         }
 
@@ -66,8 +67,9 @@ namespace archi_company_mvc.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id", patient.HealthFileId);
-            ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "Id", patient.PrimaryDoctorId);
+            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions", patient.HealthFileId);
+            //ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Patient", patient.HealthFileId);
+            ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "LastName", patient.PrimaryDoctorId);
             return View(patient);
         }
 
