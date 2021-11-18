@@ -28,14 +28,14 @@ namespace archi_company_mvc.ViewComponents
             switch (controllerName)
             {
                 case "Equipments": case "EquipmentTypes": case "Rooms":
-                    itemsList.Add(new ContextLink("./Equipments", "Equipments"));
-                    itemsList.Add(new ContextLink("./Rooms", "Rooms"));
-                    itemsList.Add(new ContextLink("./EquipmentTypes", "Equipment Types"));
+                    itemsList.Add(new ContextLink("Equipments", "Index","Equipments"));
+                    itemsList.Add(new ContextLink("Rooms", "Index","Rooms"));
+                    itemsList.Add(new ContextLink("EquipmentTypes", "Index","Equipment Types"));
                     break;
                 case  "Caregivers": case  "Patients": case  "Secretaries":
-                    itemsList.Add(new ContextLink("./Caregivers", "Caregivers"));
-                    itemsList.Add(new ContextLink("./Secretaries", "Secretaries"));
-                    itemsList.Add(new ContextLink("./Patients", "Patients"));
+                    itemsList.Add(new ContextLink("Caregivers", "Index", "Caregivers"));
+                    itemsList.Add(new ContextLink("Secretaries", "Index","Secretaries"));
+                    itemsList.Add(new ContextLink("Patients", "Index", "Patients"));
                     break;
                 default:
                     break;

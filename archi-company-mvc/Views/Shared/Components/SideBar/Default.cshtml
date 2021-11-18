@@ -32,7 +32,7 @@ window.addEventListener("DOMContentLoaded", function() {
         @foreach (var contextLink in Model)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" href="@contextLink.LinkUrl"> @contextLink.LinkName <span class="link-spanner"></span></a>
+                <a class="nav-link text-dark" asp-controller="@contextLink.ControllerName" asp-action="@contextLink.ActionName"> @contextLink.Title <span class="link-spanner"></span></a>
             </li>
         }
     </ul>

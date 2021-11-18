@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace archi_company_mvc.Controllers
 {
@@ -15,16 +16,20 @@ namespace archi_company_mvc.Controllers
     public class SecretariesController : Controller
     {
         private readonly DatabaseContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public SecretariesController(DatabaseContext context)
+        public SecretariesController(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Secretaries
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Secretary.ToListAsync());
+            var currentUser = await _userManager.GetUserAsync(User);
+            var secretariesList = await _context.Secretary.Where(secretary => currentUser.Id != secretary.Id).ToListAsync();
+            return View(secretariesList);
         }
 
         // GET: Secretaries/Details/5

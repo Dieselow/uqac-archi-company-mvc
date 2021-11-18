@@ -21,6 +21,7 @@ namespace archi_company_mvc.Controllers
         }
         
         // GET: Patients
+        [Authorize(Roles = "Secretary,Admin")]
         public async Task<IActionResult> Index()
         {
             var databaseContext = _context.Patient.Include(p => p.HealthFile).Include(p => p.PrimaryDoctor);
@@ -28,6 +29,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Patients/Details/5
+        [Authorize(Roles = "Secretary,Admin,Patient")]
         public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
@@ -48,6 +50,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Patients/Create
+        [Authorize(Roles = "Secretary,Admin")]
         public IActionResult Create()
         {
             ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions");
@@ -61,6 +64,7 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Secretary,Admin")]
         public async Task<IActionResult> Create([Bind("PrimaryDoctorId,HealthFileId,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Patient patient)
         {
             if (ModelState.IsValid)
@@ -76,7 +80,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Patients/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
             {
@@ -98,6 +102,7 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Secretary,Admin")]
         public async Task<IActionResult> Edit(string id, [Bind("PrimaryDoctorId,HealthFileId,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Patient patient)
         {
             if (id != patient.Id)
@@ -131,6 +136,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Patients/Delete/5
+        [Authorize(Roles = "Secretary,Admin")]
         public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
@@ -153,7 +159,8 @@ namespace archi_company_mvc.Controllers
         // POST: Patients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [Authorize(Roles = "Secretary,Admin")]
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var patient = await _context.Patient.FindAsync(id);
             _context.Patient.Remove(patient);
