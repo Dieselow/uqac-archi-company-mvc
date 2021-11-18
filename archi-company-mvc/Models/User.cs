@@ -22,5 +22,15 @@ namespace archi_company_mvc.Models
         public string Password { get; set; }
 
         public string Address { get; set; }
+
+        public virtual string GetDefaultAction()
+        {
+            return "Index";
+        }
+
+        public virtual string GetController()
+        {
+            return GetType().Name;
+        }
     }
 }

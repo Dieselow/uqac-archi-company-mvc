@@ -28,6 +28,7 @@ namespace archi_company_mvc
                     var userManager = services.GetRequiredService<UserManager<User>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     await Seeds.DefaultRoles.SeedAsync(userManager, roleManager);
+                    await Seeds.DefaultUsers.SeedSuperAdminAsync(userManager, roleManager);
                     logger.LogInformation("Finished Seeding Default Data");
                     logger.LogInformation("Application Starting");
                 }

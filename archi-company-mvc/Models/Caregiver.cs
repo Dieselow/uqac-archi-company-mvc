@@ -10,6 +10,14 @@ namespace archi_company_mvc.Models
         [Display(Name = "Licence Number")]
         public string LicenceNumber {get; set; }
         public virtual ICollection<Patient> Patients { get; set; }
+        public override string GetDefaultAction()
+        {
+            return "Index";
+        }
 
+        public override string GetController()
+        {
+            return "Caregivers";
+        }
     }
 }

@@ -10,6 +10,7 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Data\" />
+        <Folder Include="Permission" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.11" />
@@ -24,5 +25,10 @@
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.1" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Roles\index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\User\index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UserRoles\index.cshtml" />
     </ItemGroup>
 </Project>

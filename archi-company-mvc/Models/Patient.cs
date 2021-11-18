@@ -15,5 +15,9 @@ namespace archi_company_mvc.Models
         
         public virtual HealthFile? HealthFile { get; set; }
 
+        public override string GetDefaultAction()
+        {
+            return "Details/" + Id;
+        }
     }
 }

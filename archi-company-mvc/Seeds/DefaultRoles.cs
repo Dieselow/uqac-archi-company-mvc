@@ -14,15 +14,5 @@ namespace archi_company_mvc.Seeds
             await roleManager.CreateAsync(new IdentityRole(Roles.Caregiver.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Patient.ToString()));
         }
-        
-        private async static Task SeedClaimsForSuperAdmin(this RoleManager<IdentityRole> roleManager)
-        {
-            var adminRole = await roleManager.FindByNameAsync("SuperAdmin");
-            await roleManager.AddPermissionClaim(adminRole, "Products");
-        }
-        public static async Task AddPermissionClaim(this RoleManager<IdentityRole> roleManager, IdentityRole role, string module)
-        {
-            var allClaims = await roleManager.GetClaimsAsync(role);
-        }
     }
 }
