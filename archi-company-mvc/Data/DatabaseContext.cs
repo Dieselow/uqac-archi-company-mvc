@@ -27,4 +27,8 @@ using archi_company_mvc.Models;
         public DbSet<archi_company_mvc.Models.Secretary> Secretary { get; set; }
 
         public DbSet<archi_company_mvc.Models.HealthFile> HealthFile { get; set; }
+
+        public DbSet<archi_company_mvc.Models.Consumable> Consumable { get; set; }
+
+        public DbSet<archi_company_mvc.Models.ConsumableType> ConsumableType { get; set; }
     }
