@@ -2,28 +2,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using archi_company_mvc.Constants;
 using archi_company_mvc.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace archi_company_mvc.Controllers
 {
     public class PatientsController : Controller
     {
         private readonly DatabaseContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public PatientsController(DatabaseContext context)
+        public PatientsController(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         
         // GET: Patients
-        [Authorize(Roles = "Secretary,Admin")]
+        [Authorize(Roles = "Secretary,Admin,Caregiver")]
         public async Task<IActionResult> Index()
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.GetType() == typeof(Caregiver) )
+            {
+                var doctorPatients = _context.Patient.Include(p => p.HealthFile).Include(p => p.PrimaryDoctor).Where(p => p.PrimaryDoctorId == user.Id);
+                return View(await doctorPatients.ToListAsync());
+            }
             var databaseContext = _context.Patient.Include(p => p.HealthFile).Include(p => p.PrimaryDoctor);
             return View(await databaseContext.ToListAsync());
         }
@@ -92,8 +102,8 @@ namespace archi_company_mvc.Controllers
             {
                 return NotFound();
             }
-            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id", patient.HealthFileId);
-            ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "Id", patient.PrimaryDoctorId);
+            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions", patient.HealthFileId);
+            ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "LastName", patient.PrimaryDoctorId);
             return View(patient);
         }
 
