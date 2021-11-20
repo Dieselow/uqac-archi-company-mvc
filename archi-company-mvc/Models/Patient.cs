@@ -21,7 +21,7 @@ namespace archi_company_mvc.Models
 
         public override string GetDefaultAction()
         {
-            return "Details/" + Id;
+            return "Details";
         }
         public override string ToString()
         {

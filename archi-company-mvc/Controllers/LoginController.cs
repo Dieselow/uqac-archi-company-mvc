@@ -44,6 +44,10 @@ namespace archi_company_mvc.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, password,true,false);
                     if (result.Succeeded)
                     {
+                        if (user.GetType() == typeof(Patient))
+                        {
+                            return RedirectToAction(actionName:user.GetDefaultAction(),user.GetController(), new{id = user.Id });    
+                        }
                         return RedirectToAction(actionName:user.GetDefaultAction(),user.GetController());   
                     }
                     return RedirectToAction("Login");

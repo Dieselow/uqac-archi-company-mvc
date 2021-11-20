@@ -1,9 +1,10 @@
 @model IEnumerable<archi_company_mvc.Models.ContextLink>
 
-
-@if (Model.Any())
+@if (User.IsInRole("Secretary"))
 {
-<script>
+    @if (Model.Any())
+    {
+        <script>
 window.addEventListener("DOMContentLoaded", function() {
  
     var SideBar = document.querySelector("#SideBar");
@@ -26,15 +27,17 @@ window.addEventListener("DOMContentLoaded", function() {
 
 
 
-<nav class='sidebar navbar-left bg-white border-rght box-shadow' id="SideBar">
-    <div id = "SideBarMenuIcon">☰</div>
-    <ul id="SideBarLinks">
-        @foreach (var contextLink in Model)
-        {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-controller="@contextLink.ControllerName" asp-action="@contextLink.ActionName"> @contextLink.Title <span class="link-spanner"></span></a>
-            </li>
-        }
-    </ul>
-</nav>
+        <nav class='sidebar navbar-left bg-white border-rght box-shadow' id="SideBar">
+            <div id = "SideBarMenuIcon">☰</div>
+            <ul id="SideBarLinks">
+                @foreach (var contextLink in Model)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="@contextLink.ControllerName" asp-action="@contextLink.ActionName"> @contextLink.Title <span class="link-spanner"></span></a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }  
 }
+
