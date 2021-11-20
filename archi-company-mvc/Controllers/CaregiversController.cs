@@ -7,16 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace archi_company_mvc.Controllers
 {
     public class CaregiversController : Controller
     {
         private readonly DatabaseContext _context;
-
-        public CaregiversController(DatabaseContext context)
+        private readonly UserManager<User> _userManager;
+        public CaregiversController(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Caregivers
@@ -66,11 +68,12 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
             {
-                return NotFound();
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                return View(await _context.Caregiver.FindAsync(user.Id));
             }
 
             var caregiver = await _context.Caregiver.FindAsync(id);

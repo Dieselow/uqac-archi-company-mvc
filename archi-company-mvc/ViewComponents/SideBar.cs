@@ -22,6 +22,10 @@ namespace archi_company_mvc.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            if (currentUser == null)
+            {
+                return View();
+            }
             string currentController = RouteData.Values["controller"].ToString();
             List<ContextLink> items = GetItemsForController(currentController, currentUser);
             return await Task.FromResult<IViewComponentResult>(View(items));

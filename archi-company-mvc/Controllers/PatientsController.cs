@@ -94,7 +94,8 @@ namespace archi_company_mvc.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                return View(await _context.Patient.FindAsync(user.Id));
             }
 
             var patient = await _context.Patient.FindAsync(id);
