@@ -1,30 +1,34 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-    public class DatabaseContext : DbContext
+namespace archi_company_mvc.Data
+{
+    public class DatabaseContext : IdentityDbContext<User>
     {
         public DatabaseContext (DbContextOptions<DatabaseContext> options)
             : base(options)
         {
         }
 
-        public DbSet<archi_company_mvc.Models.Equipment> Equipment { get; set; }
+        public DbSet<Equipment> Equipment { get; set; }
         
-        public DbSet<archi_company_mvc.Models.Room> Room { get; set; }
+        public DbSet<Room> Room { get; set; }
 
-        public DbSet<archi_company_mvc.Models.EquipmentType> EquipmentType { get; set; }
+        public DbSet<EquipmentType> EquipmentType { get; set; }
 
-        public DbSet<archi_company_mvc.Models.Ticket> Ticket { get; set; }
+        public DbSet<Ticket> Ticket { get; set; }
 
-        public DbSet<archi_company_mvc.Models.Patient> Patient { get; set; }
+        public DbSet<Patient> Patient { get; set; }
 
-        public DbSet<archi_company_mvc.Models.Caregiver> Caregiver { get; set; }
+        public DbSet<Caregiver> Caregiver { get; set; }
 
-        public DbSet<archi_company_mvc.Models.Secretary> Secretary { get; set; }
+        public DbSet<Secretary> Secretary { get; set; }
 
-        public DbSet<archi_company_mvc.Models.HealthFile> HealthFile { get; set; }
+        public DbSet<HealthFile> HealthFile { get; set; }
+
+        public DbSet<User> Users { get; set; }
     }
+}

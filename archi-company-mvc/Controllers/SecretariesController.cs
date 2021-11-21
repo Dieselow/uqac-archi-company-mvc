@@ -2,30 +2,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using archi_company_mvc.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace archi_company_mvc.Controllers
 {
+    [Authorize(Roles = "Secretary")]
     public class SecretariesController : Controller
     {
         private readonly DatabaseContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public SecretariesController(DatabaseContext context)
+        public SecretariesController(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Secretaries
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Secretary.ToListAsync());
+            var currentUser = await _userManager.GetUserAsync(User);
+            var secretariesList = await _context.Secretary.Where(secretary => currentUser.Id != secretary.Id).ToListAsync();
+            return View(secretariesList);
         }
 
         // GET: Secretaries/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -69,7 +77,8 @@ namespace archi_company_mvc.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                return View(await _context.Secretary.FindAsync(user.Id));
             }
 
             var secretary = await _context.Secretary.FindAsync(id);
@@ -85,7 +94,7 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Secretary secretary)
+        public async Task<IActionResult> Edit(string id, [Bind("Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Secretary secretary)
         {
             if (id != secretary.Id)
             {
@@ -116,7 +125,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Secretaries/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
             {
@@ -144,7 +153,7 @@ namespace archi_company_mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SecretaryExists(int id)
+        private bool SecretaryExists(string id)
         {
             return _context.Secretary.Any(e => e.Id == id);
         }

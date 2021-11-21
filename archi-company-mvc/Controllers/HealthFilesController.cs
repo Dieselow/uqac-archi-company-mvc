@@ -2,25 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using archi_company_mvc.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace archi_company_mvc.Controllers
 {
     public class HealthFilesController : Controller
     {
         private readonly DatabaseContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public HealthFilesController(DatabaseContext context)
+        public HealthFilesController(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: HealthFiles
+        [Authorize(Roles = "Caregiver")]
         public async Task<IActionResult> Index()
         {
+           
             return View(await _context.HealthFile.ToListAsync());
         }
 
@@ -34,6 +41,11 @@ namespace archi_company_mvc.Controllers
 
             var healthFile = await _context.HealthFile
                 .FirstOrDefaultAsync(m => m.Id == id);
+          /**  var currentCaregiver = _userManager.GetUserAsync(HttpContext.User);
+            if (currentCaregiver.Id.ToString() == healthFile.Patient.PrimaryDoctorId)
+            {
+                
+            }**/
             if (healthFile == null)
             {
                 return NotFound();

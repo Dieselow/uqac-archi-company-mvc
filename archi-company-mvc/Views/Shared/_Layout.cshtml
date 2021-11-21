@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> _signInManager
+@inject UserManager<User> _userManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -21,15 +24,54 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
+                    @if (User.IsInRole("Secretary") || User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Equipments" asp-action="Index">Equipments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="Index">Tickets</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Caregivers" asp-action="Index">Users</a>
+                        </li>
+                    }
+                @if (!_signInManager.IsSignedIn(User))
+                {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Equipments" asp-action="Index">Equipments</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="RegisterPatient">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="Index">Tickets</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Login">Login</a>
                     </li>
+                }
+                else {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Caregivers" asp-action="Index">Caregivers</a>
+                        <span  class="nav-link text-dark" title="Manage">Hello @User.Identity.Name!</span>
                     </li>
+                    @if (User.IsInRole("Secretary"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Secretaries" asp-action="Edit" asp->Profile</a>
+                        </li>
+                    }
+                    @if (User.IsInRole("Patient"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Edit" asp->Profile</a>
+                        </li>
+                    }
+                   @if (User.IsInRole("Caregiver"))
+                   {
+                       <li class="nav-item">
+                           <a class="nav-link text-dark" asp-area="" asp-controller="Caregivers" asp-action="Edit" asp->Profile</a>
+                       </li>
+                   }
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
+                    </li>
+                }
+                
                 </ul>
             </div>
         </div>
