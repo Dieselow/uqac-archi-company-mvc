@@ -7,66 +7,90 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Patient</h4>
+    <h4>Patient</h4> <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PrimaryDoctor)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PrimaryDoctor.Id)
+            @Html.DisplayFor(model => model.PrimaryDoctor.FirstName)
+            @Html.DisplayFor(model => model.PrimaryDoctor.LastName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HealthFile)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HealthFile.Id)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.UserName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.UserName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FirstName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LastName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DateOfBirth)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DateOfBirth)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Address)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Address)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+    </dl>
+    <h4>Healthfile</h4> <a asp-area="" asp-controller="HealthFiles" asp-action="Edit" asp-route-id="@Model.HealthFile.Id">Edit healthfile</a>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HealthFile.Medications)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HealthFile.Medications)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HealthFile.ChronicConditions)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HealthFile.ChronicConditions)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HealthFile.EmergencyContact)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HealthFile.EmergencyContact)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    |
     <a asp-action="Index">Back to List</a>
 </div>

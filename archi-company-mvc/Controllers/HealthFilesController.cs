@@ -121,8 +121,9 @@ namespace archi_company_mvc.Controllers
                     {
                         throw;
                     }
-                }
-                return RedirectToAction(nameof(Index));
+                }//int patientID=healthFile.Patient.Id; -- non fonctionnel.
+                //return Redirect(Url.Action("Details", "Patients")+"/"+patientID); -- pour revenir directement sur les détails d'un patient.
+                return Redirect(Url.Action("Index", "Patients"));
             }
             return View(healthFile);
         }
