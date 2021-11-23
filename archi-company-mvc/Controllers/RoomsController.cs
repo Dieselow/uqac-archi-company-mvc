@@ -19,9 +19,21 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Rooms
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Room.ToListAsync());
+        public async Task<IActionResult> Index(string searchString, string searchProperty)
+        {   
+            var rooms = from m in _context.Room
+                            select m;
+
+            ViewData["Attributes"] = SelectListUtils.CreatePropertiesSelectListForType("Room", String.IsNullOrEmpty(searchProperty) ? "" : searchProperty);
+            if (!String.IsNullOrEmpty(searchString) && !String.IsNullOrEmpty(searchProperty))
+            {
+                rooms = SelectListUtils.DynamicWhere(rooms, searchProperty, searchString);
+                ViewBag.Search = searchString;
+            } else {
+                ViewBag.Search = "";
+            }
+
+            return View(await rooms.ToListAsync());
         }
 
         // GET: Rooms/Details/5

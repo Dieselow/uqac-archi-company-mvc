@@ -19,9 +19,21 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: EquipmentTypes
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.EquipmentType.ToListAsync());
+        public async Task<IActionResult> Index(string searchString, string searchProperty)
+        {   
+            var equipmentTypes = from m in _context.EquipmentType
+                            select m;
+
+            ViewData["Attributes"] = SelectListUtils.CreatePropertiesSelectListForType("EquipmentType", String.IsNullOrEmpty(searchProperty) ? "" : searchProperty);
+            if (!String.IsNullOrEmpty(searchString) && !String.IsNullOrEmpty(searchProperty))
+            {
+                equipmentTypes = SelectListUtils.DynamicWhere(equipmentTypes, searchProperty, searchString);
+                ViewBag.Search = searchString;
+            } else {
+                ViewBag.Search = "";
+            }
+
+            return View(await equipmentTypes.ToListAsync());
         }
 
         // GET: EquipmentTypes/Details/5
