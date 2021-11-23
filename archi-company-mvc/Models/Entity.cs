@@ -7,6 +7,10 @@ namespace archi_company_mvc.Models
         {
             foreach (var property in GetType().GetProperties())
             {
+                if (property.Name == "Id")
+                {
+                    continue;
+                }
                 tags += property.Name + "=" + property.GetValue(this, null);
             }
         }
