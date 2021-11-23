@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace archi_company_mvc.Models
 {
-    public class Equipment
+    public class Equipment: Entity
     {
         [Key]
         public int Id { get; set; }
