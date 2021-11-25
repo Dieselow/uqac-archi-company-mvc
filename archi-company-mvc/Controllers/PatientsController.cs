@@ -113,9 +113,27 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Secretary,Admin")]
+        [Authorize(Roles = "Secretary,Admin,Patient")]
         public async Task<IActionResult> Edit(string id, [Bind("PrimaryDoctorId,HealthFileId,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Patient patient)
         {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            if (currentUser.Id == patient.Id)
+            {
+                var currentPatient = await _context.Patient.FindAsync(patient.Id);
+                currentPatient.FirstName = patient.FirstName;
+                currentPatient.LastName = patient.LastName;
+                currentPatient.Address = patient.Address;
+                currentPatient.PrimaryDoctorId = patient.PrimaryDoctorId;
+                currentPatient.HealthFileId = patient.HealthFileId;
+                currentPatient.DateOfBirth = patient.DateOfBirth;
+                currentPatient.PhoneNumber = patient.PhoneNumber;
+                var result = await _userManager.UpdateAsync(currentPatient);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(Edit));
+                }
+                ModelState.AddModelError(string.Empty,"Something went wront during update");
+            }
             if (id != patient.Id)
             {
                 return NotFound();
@@ -134,12 +152,10 @@ namespace archi_company_mvc.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit));
             }
             ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id", patient.HealthFileId);
             ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "Id", patient.PrimaryDoctorId);
