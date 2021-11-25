@@ -17,6 +17,14 @@
             @Html.DisplayFor(model => model.RequestDate)
         </dd>
     </dl>
+    @if (Model.Consumables != null && Model.Consumables.Count() > 0 ) {
+                <div class="form-group">
+                @foreach (Consumable cons in Model.Consumables)
+                {
+                    <span> @Html.DisplayNameFor(model => cons) : @Html.DisplayFor(model => cons.ConsumableType.Brand + " " + cons.ConsumableType.Name) -> @Html.DisplayFor(model => cons.Quantity)</span>
+                }
+                </div>
+            }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

@@ -15,6 +15,10 @@ namespace archi_company_mvc.Models
 
         public int ConsumableTypeId {get; set;}
 
+        public int? TicketId {get; set;}
+
+        public Ticket Ticket{get; set;}
+
         public virtual ConsumableType ConsumableType {get; set;}
 
     }

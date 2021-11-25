@@ -47,7 +47,7 @@ namespace archi_company_mvc.Controllers
         // GET: Consumables/Create
         public IActionResult Create()
         {
-            ViewData["ConsumableTypeId"] = new SelectList(_context.Set<ConsumableType>(), "Id", "Id");
+            ViewData["ConsumableType"] = new SelectList(from x in _context.ConsumableType select new {x.Id, x.Name, x.Brand, BrandName = x.Brand + " " + x.Name}, "Id", "BrandName");
             return View();
         }
 
@@ -81,7 +81,7 @@ namespace archi_company_mvc.Controllers
             {
                 return NotFound();
             }
-            ViewData["ConsumableTypeId"] = new SelectList(_context.Set<ConsumableType>(), "Id", "Id", consumable.ConsumableTypeId);
+            ViewData["ConsumableType"] = new SelectList(from x in _context.ConsumableType select new {x.Id, x.Name, x.Brand, BrandName = x.Brand + " " + x.Name}, "Id", "BrandName", consumable.ConsumableTypeId);
             return View(consumable);
         }
 
@@ -117,7 +117,7 @@ namespace archi_company_mvc.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConsumableTypeId"] = new SelectList(_context.Set<ConsumableType>(), "Id", "Id", consumable.ConsumableTypeId);
+            ViewData["ConsumableTypeId"] = new SelectList(from x in _context.ConsumableType select new {x.Id, x.Name, x.Brand, BrandName = x.Brand + " " + x.Name}, "Id", "BrandName", consumable.ConsumableTypeId);
             return View(consumable);
         }
 

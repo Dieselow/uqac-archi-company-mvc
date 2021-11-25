@@ -24,9 +24,13 @@
                 <span asp-validation-for="Treshold" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ConsumableTypeId" class="control-label"></label>
-                <select asp-for="ConsumableTypeId" class="form-control" asp-items="ViewBag.ConsumableTypeId"></select>
+                <label asp-for="ConsumableTypeId" class="control-label">@Html.DisplayNameFor(model => model.ConsumableType)</label>
+                <select asp-for="ConsumableTypeId" class="form-control" asp-items="ViewBag.ConsumableType"></select>
                 <span asp-validation-for="ConsumableTypeId" class="text-danger"></span>
+
+                <p>
+                    <a asp-area="" asp-controller="ConsumableTypes" asp-action="Create" >Create Consumable Type</a>
+                </p>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

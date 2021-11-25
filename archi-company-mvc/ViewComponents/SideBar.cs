@@ -27,19 +27,19 @@ namespace archi_company_mvc.ViewComponents
             switch (controllerName)
             {
                 case "Equipments": case "EquipmentTypes": case "Rooms":
-                    itemsList.Add(new ContextLink("./Equipments", "Equipments"));
-                    itemsList.Add(new ContextLink("./Rooms", "Rooms"));
-                    itemsList.Add(new ContextLink("./EquipmentTypes", "Equipment Types"));
+                    itemsList.Add(new ContextLink("Equipments", "Equipments"));
+                    itemsList.Add(new ContextLink("Rooms", "Rooms"));
+                    itemsList.Add(new ContextLink("EquipmentTypes", "Equipment Types"));
                     break;
                 case "Tickets": case "ConsumableTypes": case "Consumables":
-                    itemsList.Add(new ContextLink("./Tickets", "Tickets"));
-                    itemsList.Add(new ContextLink("./ConsumableTypes", "Consumables types"));
-                    itemsList.Add(new ContextLink("./Consumables", "Consumables"));
+                    itemsList.Add(new ContextLink("Tickets", "Tickets"));
+                    itemsList.Add(new ContextLink("Consumables", "Consumables"));
+                    itemsList.Add(new ContextLink("ConsumableTypes", "Consumables types"));
                     break;
                 case  "Caregivers": case  "Patients": case  "Secretaries":
-                    itemsList.Add(new ContextLink("./Caregivers", "Caregivers"));
-                    itemsList.Add(new ContextLink("./Secretaries", "Secretaries"));
-                    itemsList.Add(new ContextLink("./Patients", "Patients"));
+                    itemsList.Add(new ContextLink("Caregivers", "Caregivers"));
+                    itemsList.Add(new ContextLink("Secretaries", "Secretaries"));
+                    itemsList.Add(new ContextLink("Patients", "Patients"));
                     break;
                 default:
                     break;

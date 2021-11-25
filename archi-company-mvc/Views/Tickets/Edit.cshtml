@@ -18,6 +18,14 @@
                 <input asp-for="RequestDate" class="form-control" />
                 <span asp-validation-for="RequestDate" class="text-danger"></span>
             </div>
+            @if (Model.Consumables != null && Model.Consumables.Count() > 0 ) {
+                <div class="form-group">
+                @foreach (Consumable cons in Model.Consumables)
+                {
+                    <span> @Html.DisplayNameFor(model => cons) : @Html.DisplayFor(model => cons.ConsumableType.Brand + " " + cons.ConsumableType.Name) -> @Html.DisplayFor(model => cons.Quantity)</span>
+                }
+                </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

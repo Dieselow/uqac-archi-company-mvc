@@ -38,13 +38,15 @@ namespace archi_company_mvc.Controllers
             {
                 return NotFound();
             }
-
             return View(ticket);
         }
 
         // GET: Tickets/Create
         public IActionResult Create()
         {
+
+            var request = from x in _context.Consumable where x.TicketId == null select new {x.Id, x.Quantity,  x.ConsumableType.Name, x.ConsumableType.Brand, FinalName = x.ConsumableType.Brand + " " + x.ConsumableType.Name + ":" + x.Quantity}; 
+            ViewData["ConsumableList"] = new MultiSelectList(request, "Id","FinalName");
             return View();
         }
 
@@ -61,6 +63,7 @@ namespace archi_company_mvc.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(ticket);
         }
 
