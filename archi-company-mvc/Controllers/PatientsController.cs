@@ -106,8 +106,6 @@ namespace archi_company_mvc.Controllers
             ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions", patient.HealthFileId);
             ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "LastName", patient.PrimaryDoctorId);
             ViewBag.PrimaryDoctorId = new SelectList(_context.Caregiver.ToList(), "Id", "LastName", patient.PrimaryDoctorId);
-            var t = this._context.Caregiver.ToList();
-            var y = new SelectList(_context.Set<Caregiver>(), "Id", "LastName", patient.PrimaryDoctorId).ToList();
             return View(patient);
         }
 
