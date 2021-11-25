@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace archi_company_mvc.Controllers
 {
-    [Authorize(Roles = "Secretary")]
+    [Authorize(Roles = "Admin,Secretary")]
     public class SecretariesController : Controller
     {
         private readonly DatabaseContext _context;

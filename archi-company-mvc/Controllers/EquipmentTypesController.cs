@@ -7,25 +7,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace archi_company_mvc.Controllers
 {
+    [Authorize(Roles = "Admin,Secretary")]
     public class EquipmentTypesController : Controller
     {
         private readonly DatabaseContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public EquipmentTypesController(DatabaseContext context)
+        public EquipmentTypesController(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        // GET: EquipmentTypes
         public async Task<IActionResult> Index()
         {
             return View(await _context.EquipmentType.ToListAsync());
         }
 
-        // GET: EquipmentTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,15 +46,11 @@ namespace archi_company_mvc.Controllers
             return View(equipmentType);
         }
 
-        // GET: EquipmentTypes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: EquipmentTypes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] EquipmentType equipmentType)
@@ -65,7 +64,6 @@ namespace archi_company_mvc.Controllers
             return View(equipmentType);
         }
 
-        // GET: EquipmentTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,9 +79,6 @@ namespace archi_company_mvc.Controllers
             return View(equipmentType);
         }
 
-        // POST: EquipmentTypes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] EquipmentType equipmentType)
@@ -116,7 +111,6 @@ namespace archi_company_mvc.Controllers
             return View(equipmentType);
         }
 
-        // GET: EquipmentTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +128,6 @@ namespace archi_company_mvc.Controllers
             return View(equipmentType);
         }
 
-        // POST: EquipmentTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
