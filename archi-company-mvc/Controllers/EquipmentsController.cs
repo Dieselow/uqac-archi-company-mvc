@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,14 +25,17 @@ namespace archi_company_mvc.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string searchString)
+        [Authorize(Roles = "Secretary")]
+        // GET: Equipments
+        public async Task<IActionResult> Index(string searchString, string searchProperty)
         {
             var equipments = from m in _context.Equipment
                             select m;
-
-            if (!String.IsNullOrEmpty(searchString))
+   
+            ViewData["Attributes"] = SelectListUtils.CreatePropertiesSelectListForType("Equipment", String.IsNullOrEmpty(searchProperty) ? "" : searchProperty);
+            if (!String.IsNullOrEmpty(searchString) && !String.IsNullOrEmpty(searchProperty))
             {
-                equipments = equipments.Where(s => s.EquipmentType.Name.Contains(searchString));
+                equipments = SelectListUtils.DynamicWhere(equipments, searchProperty, searchString);
                 ViewBag.Search = searchString;
             } else {
                 ViewBag.Search = "";

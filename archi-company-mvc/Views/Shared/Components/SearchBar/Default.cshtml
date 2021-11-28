@@ -1,0 +1,18 @@
+@model archi_company_mvc.Models.SearchBarViewModel
+
+<p>
+    <form class="form-inline" asp-controller='@ViewContext.RouteData.Values["controller"].ToString()' asp-action="Index" method="get">
+        <div class="row">
+            @if (Model.Properties!= null && (Model.Properties.Count() > 1))
+            {
+                <select class="form-control" asp-items="Model.Properties" name="SearchProperty"></select> 
+            } else {
+                <label for="SearchString">@Model.Properties.First().Text</label>
+                <input style="display:none;" value="@Model.Properties.First().Value" name="SearchProperty" />
+            }
+            
+            <input class="form-control" type="text" name="SearchString" value="@Model.SearchString"/>
+            <input class="form-control" type="submit" value="Search" />
+        </div>
+    </form>
+</p>

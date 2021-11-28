@@ -29,6 +29,12 @@ namespace archi_company_mvc.Data
 
         public DbSet<HealthFile> HealthFile { get; set; }
 
+
+        public DbSet<Consumable> Consumable { get; set; }
+
+
+        public DbSet<ConsumableType> ConsumableType { get; set; }
+
         public DbSet<User> Users { get; set; }
     }
 }

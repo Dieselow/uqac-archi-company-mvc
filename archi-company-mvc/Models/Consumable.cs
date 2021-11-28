@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
 namespace archi_company_mvc.Models
-{
+{   
     public class Consumable
     {
         [Key]
@@ -16,6 +16,10 @@ namespace archi_company_mvc.Models
         public int ConsumableTypeId {get; set;}
 
         public virtual ConsumableType ConsumableType {get; set;}
+
+        public int? TicketId {get; set;}
+
+        public virtual Ticket Ticket{get; set;}
 
     }
 }

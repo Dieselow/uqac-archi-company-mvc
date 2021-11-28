@@ -9,17 +9,12 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<form asp-controller="Equipments" asp-action="Index" method="get">
-    <p>
-        Name: <input type="text" name="SearchString" value="@ViewBag.Search"/>
-        <input type="submit" value="Search" />
-    </p>
-</form>
+<vc:search-bar properties="@ViewBag.Attributes" search-string="@ViewBag.Search"></vc:search-bar>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EquipmentType.Name)
+                @Html.DisplayNameFor(model => model.EquipmentType)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.InstallationDate)

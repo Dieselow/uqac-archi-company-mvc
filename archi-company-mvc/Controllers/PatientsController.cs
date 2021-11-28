@@ -40,7 +40,7 @@ namespace archi_company_mvc.Controllers
 
         // GET: Patients/Details/5
         [Authorize(Roles = "Secretary,Admin,Patient")]
-        public async Task<IActionResult> Details(string? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -90,7 +90,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Patients/Edit/5
-        public async Task<IActionResult> Edit(string? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -105,6 +105,7 @@ namespace archi_company_mvc.Controllers
             }
             ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions", patient.HealthFileId);
             ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "LastName", patient.PrimaryDoctorId);
+            ViewBag.PrimaryDoctorId = new SelectList(_context.Caregiver.ToList(), "Id", "LastName", patient.PrimaryDoctorId);
             return View(patient);
         }
 
@@ -164,7 +165,7 @@ namespace archi_company_mvc.Controllers
 
         // GET: Patients/Delete/5
         [Authorize(Roles = "Secretary,Admin")]
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {

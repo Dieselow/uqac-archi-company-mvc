@@ -8,7 +8,9 @@ namespace archi_company_mvc.Models
     {
         [Key]
         public int Id { get; set; }
+        [Searchable(true)]
         public string Name { get; set; }
+
         public virtual ICollection<Equipment> Equipments { get; set; }
     }
 }
