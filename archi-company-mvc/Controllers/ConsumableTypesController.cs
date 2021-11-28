@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using archi_company_mvc.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using archi_company_mvc.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,22 +10,22 @@ using archi_company_mvc.Models;
 
 namespace archi_company_mvc.Controllers
 {
-    public class TicketsController : Controller
+    public class ConsumableTypesController : Controller
     {
         private readonly DatabaseContext _context;
 
-        public TicketsController(DatabaseContext context)
+        public ConsumableTypesController(DatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: Tickets
+        // GET: ConsumableTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Ticket.ToListAsync());
+            return View(await _context.ConsumableType.ToListAsync());
         }
 
-        // GET: Tickets/Details/5
+        // GET: ConsumableTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,47 +33,39 @@ namespace archi_company_mvc.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket.Include(m => m.Consumables).ThenInclude(c => c.ConsumableType).FirstOrDefaultAsync(m => m.Id == id);
-            if (ticket == null)
+            var consumableType = await _context.ConsumableType
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (consumableType == null)
             {
                 return NotFound();
             }
-            return View(ticket);
+
+            return View(consumableType);
         }
 
-        // GET: Tickets/Create
+        // GET: ConsumableTypes/Create
         public IActionResult Create()
         {
-
-            var request = from x in _context.Consumable where x.TicketId == null select new {x.Id, x.Quantity,  x.ConsumableType.Name, x.ConsumableType.Brand, FinalName = x.ConsumableType.Brand + " " + x.ConsumableType.Name + " : " + x.Quantity}; 
-            ViewData["ConsumableList"] = new MultiSelectList(request, "Id","FinalName");
             return View();
         }
 
-        // POST: Tickets/Create
+        // POST: ConsumableTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RequestDate,EquipmentTypeId,ConsumablesIds,Name")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("Id,Name,Brand")] ConsumableType consumableType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(ticket);
-                await _context.SaveChangesAsync();
-                foreach(var consumableId in ticket.ConsumablesIds){
-                    Consumable toUpdate = _context.Consumable.Find(consumableId);
-                    toUpdate.TicketId = ticket.Id;
-                    _context.Update(toUpdate);
-                }
+                _context.Add(consumableType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-            return View(ticket);
+            return View(consumableType);
         }
 
-        // GET: Tickets/Edit/5
+        // GET: ConsumableTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,23 +73,22 @@ namespace archi_company_mvc.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket.Include(m => m.Consumables).ThenInclude(c => c.ConsumableType).FirstOrDefaultAsync(m => m.Id == id);
-             
-            if (ticket == null)
+            var consumableType = await _context.ConsumableType.FindAsync(id);
+            if (consumableType == null)
             {
                 return NotFound();
             }
-            return View(ticket);
+            return View(consumableType);
         }
 
-        // POST: Tickets/Edit/5
+        // POST: ConsumableTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RequestDate,EquipmentTypeId,Name")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Brand")] ConsumableType consumableType)
         {
-            if (id != ticket.Id)
+            if (id != consumableType.Id)
             {
                 return NotFound();
             }
@@ -106,12 +97,12 @@ namespace archi_company_mvc.Controllers
             {
                 try
                 {
-                    _context.Update(ticket);
+                    _context.Update(consumableType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TicketExists(ticket.Id))
+                    if (!ConsumableTypeExists(consumableType.Id))
                     {
                         return NotFound();
                     }
@@ -122,10 +113,10 @@ namespace archi_company_mvc.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(ticket);
+            return View(consumableType);
         }
 
-        // GET: Tickets/Delete/5
+        // GET: ConsumableTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,33 +124,30 @@ namespace archi_company_mvc.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket.Include(m => m.Consumables).ThenInclude(c => c.ConsumableType).FirstOrDefaultAsync(m => m.Id == id);
-            if (ticket == null)
+            var consumableType = await _context.ConsumableType
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (consumableType == null)
             {
                 return NotFound();
             }
 
-            return View(ticket);
+            return View(consumableType);
         }
 
-        // POST: Tickets/Delete/5
+        // POST: ConsumableTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ticket = await _context.Ticket.Include(m => m.Consumables).FirstOrDefaultAsync(m => m.Id == id);
-            foreach(var consumable in ticket.Consumables){
-                    consumable.TicketId = null;
-                    _context.Update(consumable);
-            }
-            _context.Ticket.Remove(ticket);
+            var consumableType = await _context.ConsumableType.FindAsync(id);
+            _context.ConsumableType.Remove(consumableType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TicketExists(int id)
+        private bool ConsumableTypeExists(int id)
         {
-            return _context.Ticket.Any(e => e.Id == id);
+            return _context.ConsumableType.Any(e => e.Id == id);
         }
     }
 }

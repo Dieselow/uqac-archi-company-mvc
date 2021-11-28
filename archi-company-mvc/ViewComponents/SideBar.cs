@@ -54,6 +54,13 @@ namespace archi_company_mvc.ViewComponents
                             itemsList.Add(new ContextLink("Secretaries", "Index", "Secretaries"));
                             itemsList.Add(new ContextLink("Patients", "Index", "Patients"));
                             break;
+                        case "Tickets": 
+                        case "ConsumableTypes": 
+                        case "Consumables":
+                            itemsList.Add(new ContextLink("Tickets", "Index", "Tickets"));
+                            itemsList.Add(new ContextLink("Consumables", "Index", "Consumables"));
+                            itemsList.Add(new ContextLink("ConsumableTypes", "Index", "Consumables types"));
+                            break;
                     }
                     break;
             }
