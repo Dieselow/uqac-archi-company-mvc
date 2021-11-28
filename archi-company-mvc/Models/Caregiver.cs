@@ -16,7 +16,7 @@ namespace archi_company_mvc.Models
 
         public override string GetController()
         {
-            return "Caregivers";
+            return "Patients";
         }
     }
 }

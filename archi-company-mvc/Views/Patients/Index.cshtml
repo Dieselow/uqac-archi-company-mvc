@@ -5,10 +5,12 @@
 }
 
 <h1>Patients</h1>
-
+@if (User.IsInRole("Secretary"))
+{
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+}
 <table class="table">
     <thead>
         <tr>
