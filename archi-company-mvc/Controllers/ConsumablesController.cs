@@ -7,16 +7,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace archi_company_mvc.Controllers
 {
+    [Authorize(Roles = "Admin,Secretary")]
     public class ConsumablesController : Controller
     {
         private readonly DatabaseContext _context;
 
-        public ConsumablesController(DatabaseContext context)
+        private readonly UserManager<User> _userManager;
+
+        public ConsumablesController(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Consumables

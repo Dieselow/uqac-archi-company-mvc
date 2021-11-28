@@ -7,16 +7,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace archi_company_mvc.Controllers
 {
+    [Authorize(Roles = "Admin,Secretary")]
     public class ConsumableTypesController : Controller
     {
         private readonly DatabaseContext _context;
 
-        public ConsumableTypesController(DatabaseContext context)
+        private readonly UserManager<User> _userManager;
+
+        public ConsumableTypesController(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: ConsumableTypes

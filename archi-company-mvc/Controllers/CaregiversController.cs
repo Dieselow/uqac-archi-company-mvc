@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace archi_company_mvc.Controllers
 {
@@ -22,12 +23,14 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers
+        [Authorize(Roles = "Admin,Secretary")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Caregiver.ToListAsync());
         }
 
         // GET: Caregivers/Details/5
+        [Authorize(Roles = "Admin,Secretary")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -46,6 +49,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers/Create
+        [Authorize(Roles = "Admin,Secretary")]
         public IActionResult Create()
         {
             return View();
@@ -56,6 +60,7 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Secretary")]
         public async Task<IActionResult> Create([Bind("LicenceNumber,Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Caregiver caregiver)
         {
             if (ModelState.IsValid)
@@ -68,6 +73,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers/Edit/5
+        [Authorize(Roles = "Admin,Secretary,Caregiver")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -89,6 +95,7 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Secretary,Caregiver")]
         public async Task<IActionResult> Edit(string id, [Bind("LicenceNumber,Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Caregiver caregiver)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -140,6 +147,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers/Delete/5
+        [Authorize(Roles = "Admin,Secretary")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -160,6 +168,7 @@ namespace archi_company_mvc.Controllers
         // POST: Caregivers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Secretary")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var caregiver = await _context.Caregiver.FindAsync(id);
