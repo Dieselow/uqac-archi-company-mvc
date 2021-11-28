@@ -28,7 +28,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers/Details/5
-        public async Task<IActionResult> Details(string? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -68,7 +68,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers/Edit/5
-        public async Task<IActionResult> Edit(string? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -140,7 +140,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers/Delete/5
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
