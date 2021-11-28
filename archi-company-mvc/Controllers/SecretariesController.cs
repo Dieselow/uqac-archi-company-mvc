@@ -96,6 +96,25 @@ namespace archi_company_mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Secretary secretary)
         {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            if (currentUser.Id == secretary.Id)
+            {
+                var currentSecretary = await _context.Secretary.FindAsync(secretary.Id);
+                currentSecretary.FirstName = secretary.FirstName;
+                currentSecretary.LastName = secretary.LastName;
+                currentSecretary.Address = secretary.Address;
+                currentSecretary.DateOfBirth = secretary.DateOfBirth;
+                currentSecretary.PhoneNumber = secretary.PhoneNumber;
+                currentSecretary.Salary = secretary.Salary;
+                currentSecretary.WorkSchedule = secretary.WorkSchedule;
+                currentSecretary.EmploymentDate = secretary.EmploymentDate;
+                var result = await _userManager.UpdateAsync(currentSecretary);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(Edit));
+                }
+                ModelState.AddModelError(string.Empty,"Something went wront during update");
+            }
             if (id != secretary.Id)
             {
                 return NotFound();

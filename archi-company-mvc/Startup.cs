@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using archi_company_mvc.Data;
 using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace archi_company_mvc
 {
@@ -74,9 +76,31 @@ namespace archi_company_mvc
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope();
-            var context = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
-            context.Database.EnsureCreated();
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope())
+            {
+                if (serviceScope == null) return;
+                var context = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
+                var result = context.Database.EnsureCreated();
+                if (result)
+                {
+                    var loggerFactory = serviceScope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+                    var logger = loggerFactory.CreateLogger("app");
+                    try
+                    {
+                        var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                        var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                        Seeds.DefaultRoles.SeedAsync(userManager, roleManager).Wait();
+                        Seeds.DefaultUsers.SeedSuperAdminAsync(userManager, roleManager).Wait();
+                        Seeds.DefaultUsers.SeedUsers(userManager, roleManager).Wait();
+                        logger.LogInformation("Finished Seeding Default Data");
+                        logger.LogInformation("Application Starting");
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogWarning(ex, "An error occurred seeding the DB");
+                    }
+                }
+            }
         }
     }
 }
