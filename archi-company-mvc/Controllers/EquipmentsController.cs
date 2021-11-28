@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using archi_company_mvc.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace archi_company_mvc.Controllers
 {
@@ -18,6 +20,7 @@ namespace archi_company_mvc.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Secretary")]
         // GET: Equipments
         public async Task<IActionResult> Index(string searchString)
         {

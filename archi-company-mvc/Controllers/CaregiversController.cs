@@ -2,20 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using archi_company_mvc.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace archi_company_mvc.Controllers
 {
     public class CaregiversController : Controller
     {
         private readonly DatabaseContext _context;
-
-        public CaregiversController(DatabaseContext context)
+        private readonly UserManager<User> _userManager;
+        public CaregiversController(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Caregivers
@@ -25,7 +28,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -65,11 +68,12 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
             {
-                return NotFound();
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                return View(await _context.Caregiver.FindAsync(user.Id));
             }
 
             var caregiver = await _context.Caregiver.FindAsync(id);
@@ -85,8 +89,28 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LicenceNumber,Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Caregiver caregiver)
+        public async Task<IActionResult> Edit(string id, [Bind("LicenceNumber,Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Caregiver caregiver)
         {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            if (currentUser.Id == caregiver.Id)
+            {
+                var currentCaregiver = await _context.Caregiver.FindAsync(caregiver.Id);
+                currentCaregiver.FirstName = caregiver.FirstName;
+                currentCaregiver.LastName = caregiver.LastName;
+                currentCaregiver.Address = caregiver.Address;
+                currentCaregiver.DateOfBirth = caregiver.DateOfBirth;
+                currentCaregiver.PhoneNumber = caregiver.PhoneNumber;
+                currentCaregiver.Salary = caregiver.Salary;
+                currentCaregiver.WorkSchedule = caregiver.WorkSchedule;
+                currentCaregiver.EmploymentDate = caregiver.EmploymentDate;
+                currentCaregiver.LicenceNumber = caregiver.LicenceNumber;
+                var result = await _userManager.UpdateAsync(currentCaregiver);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(Edit));
+                }
+                ModelState.AddModelError(string.Empty,"Something went wront during update");
+            }
             if (id != caregiver.Id)
             {
                 return NotFound();
@@ -116,7 +140,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Caregivers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
             {
@@ -144,7 +168,7 @@ namespace archi_company_mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CaregiverExists(int id)
+        private bool CaregiverExists(string id)
         {
             return _context.Caregiver.Any(e => e.Id == id);
         }
