@@ -31,30 +31,8 @@ namespace archi_company_mvc.Controllers
             return View(await _context.HealthFile.ToListAsync());
         }
 
-        // GET: HealthFiles/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var healthFile = await _context.HealthFile
-                .FirstOrDefaultAsync(m => m.Id == id);
-          /**  var currentCaregiver = _userManager.GetUserAsync(HttpContext.User);
-            if (currentCaregiver.Id.ToString() == healthFile.Patient.PrimaryDoctorId)
-            {
-                
-            }**/
-            if (healthFile == null)
-            {
-                return NotFound();
-            }
-
-            return View(healthFile);
-        }
-
         // GET: HealthFiles/Create
+        [Authorize(Roles = "Caregiver, admin")]
         public IActionResult Create()
         {
             return View();
@@ -65,18 +43,23 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Caregiver, admin")]
         public async Task<IActionResult> Create([Bind("Id,Medications,ChronicConditions,EmergencyContact")] HealthFile healthFile)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(healthFile);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                //int patientID=healthFile.Patient.Id; -- non fonctionnel.
+                //return Redirect(Url.Action("Details", "Patients")+"/"+patientID); -- pour revenir directement sur les dï¿½tails d'un patient.
+                return Redirect(Url.Action("Index", "Patients"));
             }
             return View(healthFile);
         }
 
         // GET: HealthFiles/Edit/5
+        [Authorize(Roles = "Caregiver, admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,6 +80,7 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Caregiver, admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Medications,ChronicConditions,EmergencyContact")] HealthFile healthFile)
         {
             if (id != healthFile.Id)
@@ -122,13 +106,14 @@ namespace archi_company_mvc.Controllers
                         throw;
                     }
                 }//int patientID=healthFile.Patient.Id; -- non fonctionnel.
-                //return Redirect(Url.Action("Details", "Patients")+"/"+patientID); -- pour revenir directement sur les détails d'un patient.
+                //return Redirect(Url.Action("Details", "Patients")+"/"+patientID); -- pour revenir directement sur les dï¿½tails d'un patient.
                 return Redirect(Url.Action("Index", "Patients"));
             }
             return View(healthFile);
         }
 
         // GET: HealthFiles/Delete/5
+        [Authorize(Roles = "Caregiver, admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,6 +132,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // POST: HealthFiles/Delete/5
+        [Authorize(Roles = "Caregiver, admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

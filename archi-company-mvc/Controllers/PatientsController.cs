@@ -39,7 +39,7 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Patients/Details/5
-        [Authorize(Roles = "Secretary,Admin,Patient")]
+        [Authorize(Roles = "Secretary,Admin,Patient, Caregiver")]
         public async Task<IActionResult> Details(string? id)
         {
             if (id == null)

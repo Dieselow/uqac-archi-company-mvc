@@ -67,28 +67,39 @@
             @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
     </dl>
-    <h4>Healthfile</h4> <a asp-area="" asp-controller="HealthFiles" asp-action="Edit" asp-route-id="@Model.HealthFile.Id">Edit healthfile</a> |<a asp-area="" asp-controller="Healthfiles" asp-action="Create">Create healthfiles</a>
+    <h4>Healthfile</h4> 
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.HealthFile.Medications)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.HealthFile.Medications)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.HealthFile.ChronicConditions)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.HealthFile.ChronicConditions)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.HealthFile.EmergencyContact)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.HealthFile.EmergencyContact)
-        </dd>
-    </dl>
+    @if(Model.HealthFile == null)
+    {
+        <a asp-area="" asp-controller="Healthfiles" asp-action="Create">Create healthfiles</a>
+    }
+
+    else
+    {
+        <a asp-area="" asp-controller="HealthFiles" asp-action="Edit" asp-route-id="@Model.HealthFile.Id">Edit healthfile</a>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.HealthFile.Medications)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.HealthFile.Medications)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.HealthFile.ChronicConditions)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.HealthFile.ChronicConditions)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.HealthFile.EmergencyContact)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.HealthFile.EmergencyContact)
+            </dd>
+        </dl>
+    }
+
+
 </div>
 <div>
     |
