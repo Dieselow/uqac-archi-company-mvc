@@ -33,8 +33,7 @@ namespace archi_company_mvc.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var ticket = await _context.Ticket.Include(m => m.Consumables).ThenInclude(c => c.ConsumableType).FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
                 return NotFound();
@@ -46,7 +45,7 @@ namespace archi_company_mvc.Controllers
         public IActionResult Create()
         {
 
-            var request = from x in _context.Consumable where x.TicketId == null select new {x.Id, x.Quantity,  x.ConsumableType.Name, x.ConsumableType.Brand, FinalName = x.ConsumableType.Brand + " " + x.ConsumableType.Name + ":" + x.Quantity}; 
+            var request = from x in _context.Consumable where x.TicketId == null select new {x.Id, x.Quantity,  x.ConsumableType.Name, x.ConsumableType.Brand, FinalName = x.ConsumableType.Brand + " " + x.ConsumableType.Name + " : " + x.Quantity}; 
             ViewData["ConsumableList"] = new MultiSelectList(request, "Id","FinalName");
             return View();
         }
@@ -56,11 +55,17 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RequestDate,EquipmentTypeId")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("Id,RequestDate,EquipmentTypeId,ConsumablesIds,Name")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(ticket);
+                await _context.SaveChangesAsync();
+                foreach(var consumableId in ticket.ConsumablesIds){
+                    Consumable toUpdate = _context.Consumable.Find(consumableId);
+                    toUpdate.TicketId = ticket.Id;
+                    _context.Update(toUpdate);
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -76,7 +81,8 @@ namespace archi_company_mvc.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket.FindAsync(id);
+            var ticket = await _context.Ticket.Include(m => m.Consumables).ThenInclude(c => c.ConsumableType).FirstOrDefaultAsync(m => m.Id == id);
+             
             if (ticket == null)
             {
                 return NotFound();
@@ -89,7 +95,7 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RequestDate,EquipmentTypeId")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RequestDate,EquipmentTypeId,Name")] Ticket ticket)
         {
             if (id != ticket.Id)
             {
@@ -127,8 +133,7 @@ namespace archi_company_mvc.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var ticket = await _context.Ticket.Include(m => m.Consumables).ThenInclude(c => c.ConsumableType).FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
                 return NotFound();
@@ -142,7 +147,11 @@ namespace archi_company_mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ticket = await _context.Ticket.FindAsync(id);
+            var ticket = await _context.Ticket.Include(m => m.Consumables).FirstOrDefaultAsync(m => m.Id == id);
+            foreach(var consumable in ticket.Consumables){
+                    consumable.TicketId = null;
+                    _context.Update(consumable);
+            }
             _context.Ticket.Remove(ticket);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

@@ -11,6 +11,14 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.RequestDate)
         </dt>
         <dd class = "col-sm-10">
@@ -18,12 +26,26 @@
         </dd>
     </dl>
     @if (Model.Consumables != null && Model.Consumables.Count() > 0 ) {
-                <div class="form-group">
-                @foreach (Consumable cons in Model.Consumables)
-                {
-                    <span> @Html.DisplayNameFor(model => cons) : @Html.DisplayFor(model => cons.ConsumableType.Brand + " " + cons.ConsumableType.Name) -> @Html.DisplayFor(model => cons.Quantity)</span>
-                }
-                </div>
+                <dl class="row">
+                    <dt class = "col-sm-2">
+                        @Html.DisplayNameFor(model => model.Consumables)
+                    </dt>
+
+                    @foreach (Consumable cons in Model.Consumables)
+                    {
+                        var Brand = cons.ConsumableType.Brand;
+                        var Name = cons.ConsumableType.Name;
+                        var displayString = Brand + " " + Name;
+                        <dd class = "col-sm-10">
+                            @Html.DisplayFor(model =>  displayString) : @Html.DisplayFor(model => cons.Quantity)
+                        </dd>
+                        <dt class = "col-sm-2"></dt>
+                        
+                            
+
+                    }
+                    <dd class = "col-sm-10"></dd>
+                </dl>
             }
 </div>
 <div>

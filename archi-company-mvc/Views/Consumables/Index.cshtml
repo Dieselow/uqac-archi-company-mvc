@@ -19,7 +19,10 @@
                 @Html.DisplayNameFor(model => model.Treshold)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ConsumableType)
+                @Html.DisplayNameFor(model => model.ConsumableType.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConsumableType.Name)
             </th>
             <th></th>
         </tr>
@@ -34,7 +37,10 @@
                 @Html.DisplayFor(modelItem => item.Treshold)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ConsumableType.Id)
+                @Html.DisplayFor(modelItem => item.ConsumableType.Brand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConsumableType.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
