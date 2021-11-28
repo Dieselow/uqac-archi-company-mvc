@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using archi_company_mvc.Data;
 using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Builder;

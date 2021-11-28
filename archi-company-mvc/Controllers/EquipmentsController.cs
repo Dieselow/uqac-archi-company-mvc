@@ -1,6 +1,4 @@
 using System;
-using System.Reflection;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using archi_company_mvc.Data;
@@ -25,7 +23,6 @@ namespace archi_company_mvc.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Roles = "Secretary")]
         // GET: Equipments
         public async Task<IActionResult> Index(string searchString, string searchProperty)
         {
