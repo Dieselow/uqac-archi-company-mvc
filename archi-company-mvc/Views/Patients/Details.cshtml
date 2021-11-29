@@ -71,7 +71,7 @@
     <hr />
     @if(Model.HealthFile == null)
     {
-        <a asp-area="" asp-controller="Healthfiles" asp-action="Create">Create healthfiles</a>
+        <a asp-area="" asp-controller="HealthFiles" asp-action="Create" asp-route-patientId="@Model.Id">Create healthfiles</a>
     }
 
     else

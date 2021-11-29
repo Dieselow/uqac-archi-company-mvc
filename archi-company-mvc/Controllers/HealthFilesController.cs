@@ -33,8 +33,8 @@ namespace archi_company_mvc.Controllers
 
         // GET: HealthFiles/Create
         [Authorize(Roles = "Caregiver, admin")]
-        public IActionResult Create()
-        {
+        public IActionResult Create(string patientId)
+        {	
             return View();
         }
 
@@ -44,16 +44,15 @@ namespace archi_company_mvc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Caregiver, admin")]
-        public async Task<IActionResult> Create([Bind("Id,Medications,ChronicConditions,EmergencyContact")] HealthFile healthFile)
+        public async Task<IActionResult> Create([Bind("Id,Medications,PatientId,ChronicConditions,EmergencyContact")] HealthFile healthFile)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(healthFile);
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
-                //int patientID=healthFile.Patient.Id; -- non fonctionnel.
-                //return Redirect(Url.Action("Details", "Patients")+"/"+patientID); -- pour revenir directement sur les d�tails d'un patient.
-                return Redirect(Url.Action("Index", "Patients"));
+                string patientID=healthFile.PatientId; // non fonctionnel.
+                return Redirect(Url.Action("Details", "Patients")+"/"+patientID); // pour revenir directement sur les d�tails d'un patient.
+                //return Redirect(Url.Action("Index", "Patients"));
             }
             return View(healthFile);
         }
@@ -81,7 +80,7 @@ namespace archi_company_mvc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Caregiver, admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Medications,ChronicConditions,EmergencyContact")] HealthFile healthFile)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Medications,PatientId,ChronicConditions,EmergencyContact")] HealthFile healthFile)
         {
             if (id != healthFile.Id)
             {

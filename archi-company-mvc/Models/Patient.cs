@@ -9,7 +9,7 @@ namespace archi_company_mvc.Models
         [Display(Name = "Primary Doctor")]
         public virtual Caregiver? PrimaryDoctor { get; set; }
         
-        public int? HealthFileId { get; set; }
+        //public int? HealthFileId { get; set; }
 
         [Display(Name = "Health File")]
         public virtual HealthFile HealthFile { get; set; }

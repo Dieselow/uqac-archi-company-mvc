@@ -19,6 +19,7 @@
                 <select asp-for="PrimaryDoctorId" class="form-control" asp-items="ViewBag.PrimaryDoctorId"/>
                 <span asp-validation-for="PrimaryDoctorId" class="text-danger"></span>
             </div>
+			<!--
             <div class="form-group">
                 <label asp-for="HealthFileId" class="control-label">
                     @Html.DisplayNameFor(model => model.HealthFile)
@@ -27,6 +28,7 @@
                 </select>
                 <span asp-validation-for="HealthFileId" class="text-danger"></span>
             </div>
+			-->
             <input type="hidden" asp-for="Id"/>
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>

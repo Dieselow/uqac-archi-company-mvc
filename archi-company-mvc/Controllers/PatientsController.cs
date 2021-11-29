@@ -31,10 +31,10 @@ namespace archi_company_mvc.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user.GetType() == typeof(Caregiver) )
             {
-                var doctorPatients = _context.Patient.Include(p => p.HealthFile).Include(p => p.PrimaryDoctor).Where(p => p.PrimaryDoctorId == user.Id);
+                var doctorPatients = _context.Patient.Include(p => p.PrimaryDoctor).Where(p => p.PrimaryDoctorId == user.Id);
                 return View(await doctorPatients.ToListAsync());
             }
-            var databaseContext = _context.Patient.Include(p => p.HealthFile).Include(p => p.PrimaryDoctor);
+            var databaseContext = _context.Patient.Include(p => p.PrimaryDoctor);
             return View(await databaseContext.ToListAsync());
         }
 
@@ -48,7 +48,7 @@ namespace archi_company_mvc.Controllers
             }
 
             var patient = await _context.Patient
-                .Include(p => p.HealthFile)
+                //.Include(p => p.HealthFile)
                 .Include(p => p.PrimaryDoctor)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (patient == null)
@@ -63,7 +63,7 @@ namespace archi_company_mvc.Controllers
         [Authorize(Roles = "Secretary,Admin")]
         public IActionResult Create()
         {
-            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions");
+            //ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions");
             //ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Patient", patient.HealthFileId);
             ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "LastName");
             return View();
@@ -75,7 +75,7 @@ namespace archi_company_mvc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Secretary,Admin")]
-        public async Task<IActionResult> Create([Bind("PrimaryDoctorId,HealthFileId,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Patient patient)
+        public async Task<IActionResult> Create([Bind("PrimaryDoctorId,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Patient patient)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +83,7 @@ namespace archi_company_mvc.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions", patient.HealthFileId);
+            //ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions", patient.HealthFileId);
             //ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Patient", patient.HealthFileId);
             ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "LastName", patient.PrimaryDoctorId);
             return View(patient);
@@ -103,7 +103,7 @@ namespace archi_company_mvc.Controllers
             {
                 return NotFound();
             }
-            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions", patient.HealthFileId);
+            //ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions", patient.HealthFileId);
             ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "LastName", patient.PrimaryDoctorId);
             return View(patient);
         }
@@ -114,7 +114,7 @@ namespace archi_company_mvc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Secretary,Admin,Patient")]
-        public async Task<IActionResult> Edit(string id, [Bind("PrimaryDoctorId,HealthFileId,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Patient patient)
+        public async Task<IActionResult> Edit(string id, [Bind("PrimaryDoctorId,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Patient patient)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             if (currentUser.Id == patient.Id)
@@ -124,7 +124,7 @@ namespace archi_company_mvc.Controllers
                 currentPatient.LastName = patient.LastName;
                 currentPatient.Address = patient.Address;
                 currentPatient.PrimaryDoctorId = patient.PrimaryDoctorId;
-                currentPatient.HealthFileId = patient.HealthFileId;
+                //currentPatient.HealthFileId = patient.HealthFileId;
                 currentPatient.DateOfBirth = patient.DateOfBirth;
                 currentPatient.PhoneNumber = patient.PhoneNumber;
                 var result = await _userManager.UpdateAsync(currentPatient);
@@ -157,7 +157,7 @@ namespace archi_company_mvc.Controllers
                 }
                 return RedirectToAction(nameof(Edit));
             }
-            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id", patient.HealthFileId);
+            //ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id", patient.HealthFileId);
             ViewData["PrimaryDoctorId"] = new SelectList(_context.Set<Caregiver>(), "Id", "Id", patient.PrimaryDoctorId);
             return View(patient);
         }
@@ -172,7 +172,7 @@ namespace archi_company_mvc.Controllers
             }
 
             var patient = await _context.Patient
-                .Include(p => p.HealthFile)
+                //.Include(p => p.HealthFile)
                 .Include(p => p.PrimaryDoctor)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (patient == null)
