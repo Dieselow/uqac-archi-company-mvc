@@ -36,5 +36,7 @@ namespace archi_company_mvc.Data
         public DbSet<ConsumableType> ConsumableType { get; set; }
 
         public DbSet<User> Users { get; set; }
+        
+        public DbSet<Entity> Entities { get; set; }
     }
 }

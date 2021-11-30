@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 namespace archi_company_mvc.Models
 {
     [Table("AspNetUsers")]
-    public class User: UserEntity
+    public class User: IdentityUser
     {
         [Display(Name="First Name")]
         public string FirstName { get; set; }

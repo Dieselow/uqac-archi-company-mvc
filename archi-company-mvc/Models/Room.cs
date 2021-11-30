@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace archi_company_mvc.Models
 {
-    public class Room: Entity
+    public class Room
     {
         [Key]
         public int Id { get; set; }

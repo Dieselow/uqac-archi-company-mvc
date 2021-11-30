@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace archi_company_mvc.Models
 {
-    public class ConsumableType: Entity
+    public class ConsumableType
     {
         [Key]
         public int Id { get; set; }

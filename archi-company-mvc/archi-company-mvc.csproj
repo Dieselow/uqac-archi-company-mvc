@@ -31,4 +31,7 @@
       <_ContentIncludedByDefault Remove="Views\User\index.cshtml" />
       <_ContentIncludedByDefault Remove="Views\UserRoles\index.cshtml" />
     </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="Models\UserEntity.cs" />
+    </ItemGroup>
 </Project>

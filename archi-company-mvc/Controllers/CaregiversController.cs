@@ -65,6 +65,7 @@ namespace archi_company_mvc.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(caregiver);
+                _context.Entities.Add(new Entity(caregiver.Id, "Users", caregiver));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -106,6 +107,7 @@ namespace archi_company_mvc.Controllers
             }
 
             var currentCaregiver = await _context.Caregiver.FindAsync(caregiver.Id);
+            var currentEntity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == currentCaregiver.Id);
             currentCaregiver.FirstName = caregiver.FirstName;
             currentCaregiver.LastName = caregiver.LastName;
             currentCaregiver.Address = caregiver.Address;
@@ -116,6 +118,8 @@ namespace archi_company_mvc.Controllers
             currentCaregiver.EmploymentDate = caregiver.EmploymentDate;
             currentCaregiver.LicenceNumber = caregiver.LicenceNumber;
             var result = await _userManager.UpdateAsync(currentCaregiver);
+            currentEntity.setEntitySearchTags(caregiver);
+            _context.Entities.Add(currentEntity);
             if (result.Succeeded)
             {
                 return RedirectToAction(nameof(Edit));
@@ -149,7 +153,9 @@ namespace archi_company_mvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var caregiver = await _context.Caregiver.FindAsync(id);
+            var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == caregiver.Id);
             _context.Caregiver.Remove(caregiver);
+            _context.Entities.Remove(entity);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

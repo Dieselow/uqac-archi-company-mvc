@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace archi_company_mvc.Models
 {
-    public class Ticket: Entity
+    public class Ticket
     {
         [Key]
         public int Id { get; set; }

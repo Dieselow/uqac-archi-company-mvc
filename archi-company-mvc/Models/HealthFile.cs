@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace archi_company_mvc.Models
 {
-    public class HealthFile: Entity
+    public class HealthFile
     {
         [Key]
         public int Id { get; set; }
