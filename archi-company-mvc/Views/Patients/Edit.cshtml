@@ -17,7 +17,9 @@
                 <label asp-for="PrimaryDoctorId" class="control-label">
                     @Html.DisplayNameFor(model => model.PrimaryDoctor)
                 </label>
-                <select asp-for="PrimaryDoctorId" class="form-control" asp-items="ViewBag.PrimaryDoctorId"></select>
+                <select asp-for="PrimaryDoctorId" class="form-control" asp-items="ViewBag.PrimaryDoctorId">
+                     <option value="">Pas de docteur</option>
+                </select>
                 <span asp-validation-for="PrimaryDoctorId" class="text-danger"></span>
             </div>
             <div class="form-group">
