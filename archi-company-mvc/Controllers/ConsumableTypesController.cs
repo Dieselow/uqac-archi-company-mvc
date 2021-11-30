@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using archi_company_mvc.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using archi_company_mvc.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,34 +10,22 @@ using archi_company_mvc.Models;
 
 namespace archi_company_mvc.Controllers
 {
-    public class RoomsController : Controller
+    public class ConsumableTypesController : Controller
     {
         private readonly DatabaseContext _context;
 
-        public RoomsController(DatabaseContext context)
+        public ConsumableTypesController(DatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: Rooms
-        public async Task<IActionResult> Index(string searchString, string searchProperty)
-        {   
-            var rooms = from m in _context.Room
-                            select m;
-
-            ViewData["Attributes"] = SelectListUtils.CreatePropertiesSelectListForType("Room", String.IsNullOrEmpty(searchProperty) ? "" : searchProperty);
-            if (!String.IsNullOrEmpty(searchString) && !String.IsNullOrEmpty(searchProperty))
-            {
-                rooms = SelectListUtils.DynamicWhere(rooms, searchProperty, searchString);
-                ViewBag.Search = searchString;
-            } else {
-                ViewBag.Search = "";
-            }
-
-            return View(await rooms.ToListAsync());
+        // GET: ConsumableTypes
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.ConsumableType.ToListAsync());
         }
 
-        // GET: Rooms/Details/5
+        // GET: ConsumableTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,40 +33,39 @@ namespace archi_company_mvc.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Room.Include(room => room.Equipments)
-                            .ThenInclude(Equipment => Equipment.EquipmentType)
-                            .FirstOrDefaultAsync(m => m.Id == id);
-            if (room == null)
+            var consumableType = await _context.ConsumableType
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (consumableType == null)
             {
                 return NotFound();
             }
 
-            return View(room);
+            return View(consumableType);
         }
 
-        // GET: Rooms/Create
-        public IActionResult Create(string backLink)
+        // GET: ConsumableTypes/Create
+        public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Rooms/Create
+        // POST: ConsumableTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Room room)
+        public async Task<IActionResult> Create([Bind("Id,Name,Brand")] ConsumableType consumableType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(room);
+                _context.Add(consumableType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(room);
+            return View(consumableType);
         }
 
-        // GET: Rooms/Edit/5
+        // GET: ConsumableTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,22 +73,22 @@ namespace archi_company_mvc.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Room.FindAsync(id);
-            if (room == null)
+            var consumableType = await _context.ConsumableType.FindAsync(id);
+            if (consumableType == null)
             {
                 return NotFound();
             }
-            return View(room);
+            return View(consumableType);
         }
 
-        // POST: Rooms/Edit/5
+        // POST: ConsumableTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Room room)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Brand")] ConsumableType consumableType)
         {
-            if (id != room.Id)
+            if (id != consumableType.Id)
             {
                 return NotFound();
             }
@@ -110,12 +97,12 @@ namespace archi_company_mvc.Controllers
             {
                 try
                 {
-                    _context.Update(room);
+                    _context.Update(consumableType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RoomExists(room.Id))
+                    if (!ConsumableTypeExists(consumableType.Id))
                     {
                         return NotFound();
                     }
@@ -126,10 +113,10 @@ namespace archi_company_mvc.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(room);
+            return View(consumableType);
         }
 
-        // GET: Rooms/Delete/5
+        // GET: ConsumableTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,30 +124,30 @@ namespace archi_company_mvc.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Room
+            var consumableType = await _context.ConsumableType
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (room == null)
+            if (consumableType == null)
             {
                 return NotFound();
             }
 
-            return View(room);
+            return View(consumableType);
         }
 
-        // POST: Rooms/Delete/5
+        // POST: ConsumableTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var room = await _context.Room.FindAsync(id);
-            _context.Room.Remove(room);
+            var consumableType = await _context.ConsumableType.FindAsync(id);
+            _context.ConsumableType.Remove(consumableType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RoomExists(int id)
+        private bool ConsumableTypeExists(int id)
         {
-            return _context.Room.Any(e => e.Id == id);
+            return _context.ConsumableType.Any(e => e.Id == id);
         }
     }
 }

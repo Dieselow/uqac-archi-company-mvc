@@ -1,4 +1,4 @@
-@model archi_company_mvc.Models.Ticket
+@model archi_company_mvc.Models.ConsumableType
 
 @{
     ViewData["Title"] = "Create";
@@ -6,7 +6,7 @@
 
 <h1>Create</h1>
 
-<h4>Ticket</h4>
+<h4>ConsumableType</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,17 +18,10 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RequestDate" class="control-label"></label>
-                <input asp-for="RequestDate" class="form-control" />
-                <span asp-validation-for="RequestDate" class="text-danger"></span>
+                <label asp-for="Brand" class="control-label"></label>
+                <input asp-for="Brand" class="form-control" />
+                <span asp-validation-for="Brand" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Consumables" class="control-label"></label>
-                @Html.ListBox( "ConsumablesIds", ViewBag.ConsumableList, new { @class = "form-control" })
-                @* <select asp-for="Consumables" class="form-control" multiple asp-items="@ViewBag.ConsumableList"></select> *@
-                <span asp-validation-for="Consumables" class="text-danger"></span>
-            </div>
-            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
