@@ -66,7 +66,7 @@ namespace archi_company_mvc.Models
                 predicate = Expression.Lambda<Func<T, bool>>(condition, pe);
                 return src.Where(predicate);
                 
-            } else if (leftType.Equals(typeof(DateTime))){
+            } else if (leftType.Equals(typeof(DateTime))) {
                 DateTime formattedDate;
                 if (DateTime.TryParseExact(value, "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.None, out formattedDate)) {
                     var right = Expression.Constant(formattedDate );
@@ -74,9 +74,15 @@ namespace archi_company_mvc.Models
                     predicate = Expression.Lambda<Func<T, bool>>(condition, pe);
                     return src.Where(predicate);
                 }
-                
-               
-            } 
+            } else if (leftType.Equals(typeof(int))) {
+                int formattedInt;
+                if (Int32.TryParse(value, out formattedInt)) {
+                    var right = Expression.Constant(formattedInt);
+                    var condition = Expression.Equal(left,right);
+                    predicate = Expression.Lambda<Func<T, bool>>(condition, pe);
+                    return src.Where(predicate);
+                }
+            }
             return src;
         }
         

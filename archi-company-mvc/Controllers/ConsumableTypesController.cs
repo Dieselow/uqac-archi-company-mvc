@@ -1,3 +1,4 @@
+using System;
 using archi_company_mvc.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,9 +24,21 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: ConsumableTypes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string searchProperty)
         {
-            return View(await _context.ConsumableType.ToListAsync());
+            var consumableTypes = from m in _context.ConsumableType
+                            select m;
+   
+            ViewData["Attributes"] = SelectListUtils.CreatePropertiesSelectListForType("ConsumableType", String.IsNullOrEmpty(searchProperty) ? "" : searchProperty);
+            if (!String.IsNullOrEmpty(searchString) && !String.IsNullOrEmpty(searchProperty))
+            {
+                consumableTypes = SelectListUtils.DynamicWhere(consumableTypes, searchProperty, searchString);
+                ViewBag.Search = searchString;
+            } else {
+                ViewBag.Search = "";
+            }
+
+            return View(await consumableTypes.ToListAsync());
         }
 
         // GET: ConsumableTypes/Details/5

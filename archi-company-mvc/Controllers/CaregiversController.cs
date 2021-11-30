@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using archi_company_mvc.Data;
@@ -22,9 +23,21 @@ namespace archi_company_mvc.Controllers
 
         // GET: Caregivers
         [Authorize(Roles = "Admin,Secretary")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string searchProperty)
         {
-            return View(await _context.Caregiver.ToListAsync());
+            var caregivers = from m in _context.Caregiver
+                            select m;
+   
+            ViewData["Attributes"] = SelectListUtils.CreatePropertiesSelectListForType("Caregiver", String.IsNullOrEmpty(searchProperty) ? "" : searchProperty);
+            if (!String.IsNullOrEmpty(searchString) && !String.IsNullOrEmpty(searchProperty))
+            {
+                caregivers = SelectListUtils.DynamicWhere(caregivers, searchProperty, searchString);
+                ViewBag.Search = searchString;
+            } else {
+                ViewBag.Search = "";
+            }
+
+            return View(await caregivers.ToListAsync());
         }
 
         // GET: Caregivers/Details/5

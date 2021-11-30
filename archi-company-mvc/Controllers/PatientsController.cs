@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using archi_company_mvc.Data;
@@ -23,17 +24,29 @@ namespace archi_company_mvc.Controllers
 
         // GET: Patients
         [Authorize(Roles = "Secretary,Admin,Caregiver")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string searchProperty)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user.GetType() == typeof(Caregiver))
+
+            var patients = from m in _context.Patient
+                            select m;
+
+            ViewData["Attributes"] = SelectListUtils.CreatePropertiesSelectListForType("Patient", String.IsNullOrEmpty(searchProperty) ? "" : searchProperty);
+            if (!String.IsNullOrEmpty(searchString) && !String.IsNullOrEmpty(searchProperty))
             {
-                var doctorPatients = _context.Patient.Include(p => p.HealthFile).Include(p => p.PrimaryDoctor)
+                patients = SelectListUtils.DynamicWhere(patients, searchProperty, searchString);
+                ViewBag.Search = searchString;
+            } else {
+                ViewBag.Search = "";
+            }
+
+            if (user.GetType() == typeof(Caregiver))
+            {   var doctorPatients = patients.Include(p => p.HealthFile).Include(p => p.PrimaryDoctor)
                     .Where(p => p.PrimaryDoctorId == user.Id);
                 return View(await doctorPatients.ToListAsync());
             }
 
-            var databaseContext = _context.Patient.Include(p => p.HealthFile).Include(p => p.PrimaryDoctor);
+            var databaseContext = patients.Include(p => p.HealthFile).Include(p => p.PrimaryDoctor);
             return View(await databaseContext.ToListAsync());
         }
 

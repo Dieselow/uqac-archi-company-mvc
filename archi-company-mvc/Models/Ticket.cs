@@ -10,9 +10,11 @@ namespace archi_company_mvc.Models
         [Key]
         public int Id { get; set; }
 
+        [Searchable(true)]
         public string Name {get; set;}
 
         [DataType(DataType.Date)]
+        [Searchable]
         public DateTime RequestDate { get; set; }
 
         [NotMapped]

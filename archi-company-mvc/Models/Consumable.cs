@@ -7,12 +7,16 @@ namespace archi_company_mvc.Models
         [Key]
         public int Id { get; set; }
 
+        [Searchable]
         public int Quantity { get; set; }
 
+        [Searchable]
         public int Treshold {get; set; }
 
         public int ConsumableTypeId {get; set;}
 
+        [Display(Name="Name")]
+        [Searchable(true)]
         public virtual ConsumableType ConsumableType {get; set;}
 
         public int? TicketId {get; set;}

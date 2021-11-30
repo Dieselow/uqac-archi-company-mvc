@@ -7,6 +7,7 @@ namespace archi_company_mvc.Models
     {
 
         [Display(Name = "Licence Number")]
+        [Searchable]
         public string LicenceNumber {get; set; }
         public virtual ICollection<Patient> Patients { get; set; }
         public override string GetDefaultAction()

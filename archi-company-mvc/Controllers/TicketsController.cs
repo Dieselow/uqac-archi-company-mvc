@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using archi_company_mvc.Data;
@@ -23,9 +24,21 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Tickets
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string searchProperty)
         {
-            return View(await _context.Ticket.ToListAsync());
+            var tickets = from m in _context.Ticket
+                            select m;
+   
+            ViewData["Attributes"] = SelectListUtils.CreatePropertiesSelectListForType("Ticket", String.IsNullOrEmpty(searchProperty) ? "" : searchProperty);
+            if (!String.IsNullOrEmpty(searchString) && !String.IsNullOrEmpty(searchProperty))
+            {
+                tickets = SelectListUtils.DynamicWhere(tickets, searchProperty, searchString);
+                ViewBag.Search = searchString;
+            } else {
+                ViewBag.Search = "";
+            }
+
+            return View(await tickets.ToListAsync());
         }
 
         // GET: Tickets/Details/5

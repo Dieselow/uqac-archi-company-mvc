@@ -8,8 +8,10 @@ namespace archi_company_mvc.Models
         [Key]
         public int Id { get; set; }
 
+        [Searchable(true)]
         public string Name { get; set; }
 
+        [Searchable]
         public string Brand { get; set; }
 
         public virtual ICollection<Consumable> Consumables { get; set;}

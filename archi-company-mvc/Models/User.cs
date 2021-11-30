@@ -7,13 +7,16 @@ namespace archi_company_mvc.Models
 {
     [Table("AspNetUsers")]
     public class User: IdentityUser
-    {
+    {   
+        [Searchable]
         [Display(Name="First Name")]
         public string FirstName { get; set; }
 
+        [Searchable]
         [Display(Name="Last Name")]
         public string LastName { get; set; }
 
+        [Searchable]
         [Display(Name="Date Of Birth")]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }

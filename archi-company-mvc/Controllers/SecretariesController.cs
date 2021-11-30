@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using archi_company_mvc.Data;
@@ -22,12 +23,24 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Secretaries
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string searchProperty)
         {
             var currentUser = await _userManager.GetUserAsync(User);
-            var secretariesList =
-                await _context.Secretary.Where(secretary => currentUser.Id != secretary.Id).ToListAsync();
-            return View(secretariesList);
+            
+            var secretaries = from m in _context.Secretary
+                            where m.Id != currentUser.Id
+                            select m;
+   
+            ViewData["Attributes"] = SelectListUtils.CreatePropertiesSelectListForType("Secretary", String.IsNullOrEmpty(searchProperty) ? "" : searchProperty);
+            if (!String.IsNullOrEmpty(searchString) && !String.IsNullOrEmpty(searchProperty))
+            {
+                secretaries = SelectListUtils.DynamicWhere(secretaries, searchProperty, searchString);
+                ViewBag.Search = searchString;
+            } else {
+                ViewBag.Search = "";
+            }
+
+            return View(await secretaries.ToListAsync());
         }
 
         // GET: Secretaries/Details/5
