@@ -20,17 +20,19 @@ namespace archi_company_mvc.Controllers
             _context = context;
             _userManager = userManager;
         }
-        
+
         // GET: Patients
         [Authorize(Roles = "Secretary,Admin,Caregiver")]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user.GetType() == typeof(Caregiver) )
+            if (user.GetType() == typeof(Caregiver))
             {
-                var doctorPatients = _context.Patient.Include(p => p.HealthFile).Include(p => p.PrimaryDoctor).Where(p => p.PrimaryDoctorId == user.Id);
+                var doctorPatients = _context.Patient.Include(p => p.HealthFile).Include(p => p.PrimaryDoctor)
+                    .Where(p => p.PrimaryDoctorId == user.Id);
                 return View(await doctorPatients.ToListAsync());
             }
+
             var databaseContext = _context.Patient.Include(p => p.HealthFile).Include(p => p.PrimaryDoctor);
             return View(await databaseContext.ToListAsync());
         }
@@ -73,7 +75,10 @@ namespace archi_company_mvc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Secretary,Admin")]
-        public async Task<IActionResult> Create([Bind("PrimaryDoctorId,HealthFileId,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Patient patient)
+        public async Task<IActionResult> Create(
+            [Bind(
+                "PrimaryDoctorId,HealthFileId,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")]
+            Patient patient)
         {
             if (ModelState.IsValid)
             {
@@ -81,7 +86,9 @@ namespace archi_company_mvc.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions", patient.HealthFileId);
+
+            ViewData["HealthFileId"] =
+                new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions", patient.HealthFileId);
             //ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Patient", patient.HealthFileId);
             var request = from x in _context.Caregiver select new {x.Id,  x.FirstName, x.LastName, FinalName = x.FirstName + " " + x.LastName}; 
             ViewData["PrimaryDoctorId"] = new SelectList(request, "Id", "FinalName", patient.PrimaryDoctorId);
@@ -117,45 +124,25 @@ namespace archi_company_mvc.Controllers
         [Authorize(Roles = "Secretary,Admin,Patient,Caregiver")]
         public async Task<IActionResult> Edit(string id, [Bind("PrimaryDoctorId,HealthFileId,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Patient patient)
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            if (currentUser.Id == patient.Id)
-            {
-                var currentPatient = await _context.Patient.FindAsync(patient.Id);
-                currentPatient.FirstName = patient.FirstName;
-                currentPatient.LastName = patient.LastName;
-                currentPatient.Address = patient.Address;
-                currentPatient.PrimaryDoctorId = patient.PrimaryDoctorId;
-                currentPatient.HealthFileId = patient.HealthFileId;
-                currentPatient.DateOfBirth = patient.DateOfBirth;
-                currentPatient.PhoneNumber = patient.PhoneNumber;
-                var result = await _userManager.UpdateAsync(currentPatient);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction(nameof(Edit));
-                }
-                ModelState.AddModelError(string.Empty,"Something went wront during update");
-            }
             if (id != patient.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var currentPatient = await _context.Patient.FindAsync(patient.Id);
+            currentPatient.FirstName = patient.FirstName;
+            currentPatient.LastName = patient.LastName;
+            currentPatient.Address = patient.Address;
+            currentPatient.PrimaryDoctorId = patient.PrimaryDoctorId;
+            currentPatient.HealthFileId = patient.HealthFileId;
+            currentPatient.DateOfBirth = patient.DateOfBirth;
+            currentPatient.PhoneNumber = patient.PhoneNumber;
+            var result = await _userManager.UpdateAsync(currentPatient);
+            if (result.Succeeded)
             {
-                try
-                {
-                    _context.Update(patient);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PatientExists(patient.Id))
-                    {
-                        return NotFound();
-                    }
-
-                    throw;
-                }
+                ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id", patient.HealthFileId);
+                ViewData["PrimaryDoctorId"] =
+                    new SelectList(_context.Set<Caregiver>(), "Id", "Id", patient.PrimaryDoctorId);
                 return RedirectToAction(nameof(Edit));
             }
             ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id", patient.HealthFileId);

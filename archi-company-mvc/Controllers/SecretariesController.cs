@@ -25,7 +25,8 @@ namespace archi_company_mvc.Controllers
         public async Task<IActionResult> Index()
         {
             var currentUser = await _userManager.GetUserAsync(User);
-            var secretariesList = await _context.Secretary.Where(secretary => currentUser.Id != secretary.Id).ToListAsync();
+            var secretariesList =
+                await _context.Secretary.Where(secretary => currentUser.Id != secretary.Id).ToListAsync();
             return View(secretariesList);
         }
 
@@ -58,7 +59,10 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Secretary secretary)
+        public async Task<IActionResult> Create(
+            [Bind(
+                "Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")]
+            Secretary secretary)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +70,7 @@ namespace archi_company_mvc.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(secretary);
         }
 
@@ -83,6 +88,7 @@ namespace archi_company_mvc.Controllers
             {
                 return NotFound();
             }
+
             return View(secretary);
         }
 
@@ -91,52 +97,32 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Secretary secretary)
+        public async Task<IActionResult> Edit(string id,
+            [Bind(
+                "Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")]
+            Secretary secretary)
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            if (currentUser.Id == secretary.Id)
-            {
-                var currentSecretary = await _context.Secretary.FindAsync(secretary.Id);
-                currentSecretary.FirstName = secretary.FirstName;
-                currentSecretary.LastName = secretary.LastName;
-                currentSecretary.Address = secretary.Address;
-                currentSecretary.DateOfBirth = secretary.DateOfBirth;
-                currentSecretary.PhoneNumber = secretary.PhoneNumber;
-                currentSecretary.Salary = secretary.Salary;
-                currentSecretary.WorkSchedule = secretary.WorkSchedule;
-                currentSecretary.EmploymentDate = secretary.EmploymentDate;
-                var result = await _userManager.UpdateAsync(currentSecretary);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction(nameof(Edit));
-                }
-                ModelState.AddModelError(string.Empty,"Something went wront during update");
-            }
             if (id != secretary.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var currentSecretary = await _context.Secretary.FindAsync(secretary.Id);
+            currentSecretary.FirstName = secretary.FirstName;
+            currentSecretary.LastName = secretary.LastName;
+            currentSecretary.Address = secretary.Address;
+            currentSecretary.DateOfBirth = secretary.DateOfBirth;
+            currentSecretary.PhoneNumber = secretary.PhoneNumber;
+            currentSecretary.Salary = secretary.Salary;
+            currentSecretary.WorkSchedule = secretary.WorkSchedule;
+            currentSecretary.EmploymentDate = secretary.EmploymentDate;
+            var result = await _userManager.UpdateAsync(currentSecretary);
+            if (result.Succeeded)
             {
-                try
-                {
-                    _context.Update(secretary);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SecretaryExists(secretary.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit));
             }
+
+            ModelState.AddModelError(string.Empty, "Something went wront during update");
             return View(secretary);
         }
 

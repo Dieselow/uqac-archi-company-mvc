@@ -13,6 +13,7 @@ namespace archi_company_mvc.Controllers
     {
         private readonly DatabaseContext _context;
         private readonly UserManager<User> _userManager;
+
         public CaregiversController(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
@@ -66,6 +67,7 @@ namespace archi_company_mvc.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(caregiver);
         }
 
@@ -84,6 +86,7 @@ namespace archi_company_mvc.Controllers
             {
                 return NotFound();
             }
+
             return View(caregiver);
         }
 
@@ -95,52 +98,29 @@ namespace archi_company_mvc.Controllers
         [Authorize(Roles = "Admin,Secretary,Caregiver")]
         public async Task<IActionResult> Edit(string id, [Bind("LicenceNumber,Salary,WorkSchedule,EmploymentDate,Id,UserName,FirstName,LastName,DateOfBirth,Email,Password,Address,PhoneNumber")] Caregiver caregiver)
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            if (currentUser.Id == caregiver.Id)
-            {
-                var currentCaregiver = await _context.Caregiver.FindAsync(caregiver.Id);
-                currentCaregiver.FirstName = caregiver.FirstName;
-                currentCaregiver.LastName = caregiver.LastName;
-                currentCaregiver.Address = caregiver.Address;
-                currentCaregiver.DateOfBirth = caregiver.DateOfBirth;
-                currentCaregiver.PhoneNumber = caregiver.PhoneNumber;
-                currentCaregiver.Salary = caregiver.Salary;
-                currentCaregiver.WorkSchedule = caregiver.WorkSchedule;
-                currentCaregiver.EmploymentDate = caregiver.EmploymentDate;
-                currentCaregiver.LicenceNumber = caregiver.LicenceNumber;
-                var result = await _userManager.UpdateAsync(currentCaregiver);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction(nameof(Edit));
-                }
-                ModelState.AddModelError(string.Empty,"Something went wront during update");
-            }
             if (id != caregiver.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var currentCaregiver = await _context.Caregiver.FindAsync(caregiver.Id);
+            currentCaregiver.FirstName = caregiver.FirstName;
+            currentCaregiver.LastName = caregiver.LastName;
+            currentCaregiver.Address = caregiver.Address;
+            currentCaregiver.DateOfBirth = caregiver.DateOfBirth;
+            currentCaregiver.PhoneNumber = caregiver.PhoneNumber;
+            currentCaregiver.Salary = caregiver.Salary;
+            currentCaregiver.WorkSchedule = caregiver.WorkSchedule;
+            currentCaregiver.EmploymentDate = caregiver.EmploymentDate;
+            currentCaregiver.LicenceNumber = caregiver.LicenceNumber;
+            var result = await _userManager.UpdateAsync(currentCaregiver);
+            if (result.Succeeded)
             {
-                try
-                {
-                    _context.Update(caregiver);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CaregiverExists(caregiver.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit));
             }
-            return View(caregiver);
+
+            ModelState.AddModelError(string.Empty, "Something went wront during update");
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Caregivers/Delete/5
