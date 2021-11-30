@@ -70,41 +70,46 @@
             @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
     </dl>
-    <h4>Healthfile</h4> 
-    <hr />
-    @if(Model.HealthFile == null)
-    {
-        <a asp-area="" asp-controller="Healthfiles" asp-action="Create">Create healthfiles</a>
-    }
+    
+    @if (User.IsInRole("Caregiver")){
+        <h4>Healthfile</h4>
+        
+        @if(Model.HealthFile == null)
+        {
+            <a asp-area="" asp-controller="Healthfiles" asp-action="Create" asp-route-id="@Model.Id">Create Health file</a>
+        }
 
-    else
-    {
-        <a asp-area="" asp-controller="HealthFiles" asp-action="Edit" asp-route-id="@Model.HealthFile.Id">Edit healthfile</a>
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.HealthFile.Medications)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.HealthFile.Medications)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.HealthFile.ChronicConditions)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.HealthFile.ChronicConditions)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.HealthFile.EmergencyContact)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.HealthFile.EmergencyContact)
-            </dd>
-        </dl>
+        else
+        {
+            <a asp-area="" asp-controller="HealthFiles" asp-action="Edit" asp-route-id="@Model.HealthFile.Id">Edit Health file</a>
+        }
+        
+        <hr/>
+        @if(Model.HealthFile != null) {
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.HealthFile.Medications)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.HealthFile.Medications)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.HealthFile.ChronicConditions)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.HealthFile.ChronicConditions)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.HealthFile.EmergencyContact)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.HealthFile.EmergencyContact)
+                </dd>
+            </dl>
+        }
     }
-
 
 </div>
 <div>
-    |
     <a asp-action="Index">Back to List</a>
 </div>

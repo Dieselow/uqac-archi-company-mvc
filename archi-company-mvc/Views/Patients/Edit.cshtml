@@ -22,15 +22,21 @@
                 </select>
                 <span asp-validation-for="PrimaryDoctorId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="HealthFileId" class="control-label">
-                    @Html.DisplayNameFor(model => model.HealthFile)
-                </label>
-                <select asp-for="HealthFileId" class="form-control" asp-items="ViewBag.HealthFileId" readonly="readonly"></select>
-                <span asp-validation-for="HealthFileId" class="text-danger"></span>
-                <a asp-area="" asp-controller="HealthFiles" asp-action="Create">Create Health file</a>
-            </div>
-            <input type="hidden" asp-for="Id" />
+            @if (User.IsInRole("Caregiver"))
+                {
+                <div class="form-group">
+                    <label asp-for="HealthFileId" class="control-label">
+                        @Html.DisplayNameFor(model => model.HealthFile)
+                    </label>
+                    @if (Model.HealthFile != null) {
+                        <a asp-area="" asp-controller="HealthFiles" asp-action="Edit" asp-route-id="@Model.HealthFile.Id">Edit Health file</a>
+                    } else {
+                        <a asp-area="" asp-controller="HealthFiles" asp-action="Create" asp-route-id="@Model.Id">Create Health file</a>
+                    }
+                    
+                </div>
+                
+            }
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
                 <input asp-for="UserName" class="form-control" readonly="readonly" />

@@ -38,8 +38,8 @@ namespace archi_company_mvc.Controllers
         }
 
         // GET: Patients/Details/5
-        [Authorize(Roles = "Secretary,Admin,Patient, Caregiver")]
-        public async Task<IActionResult> Details(string? id)
+        [Authorize(Roles = "Secretary,Admin,Patient,Caregiver")]
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -105,7 +105,7 @@ namespace archi_company_mvc.Controllers
                 return View(await _context.Patient.FindAsync(user.Id));
             }
 
-            var patient = await _context.Patient.FindAsync(id);
+            var patient = await _context.Patient.Include(p => p.HealthFile).FirstOrDefaultAsync(m => m.Id == id);
             if (patient == null)
             {
                 return NotFound();
