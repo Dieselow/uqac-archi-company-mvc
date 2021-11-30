@@ -38,11 +38,8 @@ namespace archi_company_mvc.Controllers
         {
             if (ModelState.IsValid)
             {
+                healthFile.PatientId = Id;
                 _context.Add(healthFile);
-                await _context.SaveChangesAsync();
-                var patient = await _context.Patient.FirstOrDefaultAsync(m => m.Id == Id);
-                patient.HealthFileId = healthFile.Id;
-                _context.Update(patient);
                 await _context.SaveChangesAsync();
                 return Redirect(Url.Action("Index", "Patients"));
             }
@@ -72,7 +69,7 @@ namespace archi_company_mvc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Caregiver, Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Medications,ChronicConditions,EmergencyContact")] HealthFile healthFile)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Medications,ChronicConditions,EmergencyContact,PatientId")] HealthFile healthFile)
         {
             if (id != healthFile.Id)
             {

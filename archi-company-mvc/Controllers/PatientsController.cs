@@ -62,8 +62,6 @@ namespace archi_company_mvc.Controllers
         [Authorize(Roles = "Secretary,Admin")]
         public IActionResult Create()
         {
-            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions");
-            //ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Patient", patient.HealthFileId);
             var request = from x in _context.Caregiver select new {x.Id,  x.FirstName, x.LastName, FinalName = x.FirstName + " " + x.LastName}; 
             ViewData["PrimaryDoctorId"] = new SelectList(request, "Id", "FinalName");
             return View();
@@ -87,9 +85,6 @@ namespace archi_company_mvc.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["HealthFileId"] =
-                new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions", patient.HealthFileId);
-            //ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Patient", patient.HealthFileId);
             var request = from x in _context.Caregiver select new {x.Id,  x.FirstName, x.LastName, FinalName = x.FirstName + " " + x.LastName}; 
             ViewData["PrimaryDoctorId"] = new SelectList(request, "Id", "FinalName", patient.PrimaryDoctorId);
             return View(patient);
@@ -110,7 +105,6 @@ namespace archi_company_mvc.Controllers
             {
                 return NotFound();
             }
-            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "ChronicConditions", patient.HealthFileId);
             var request = from x in _context.Caregiver select new {x.Id,  x.FirstName, x.LastName, FinalName = x.FirstName + " " + x.LastName}; 
             ViewData["PrimaryDoctorId"] = new SelectList(request, "Id", "FinalName", patient.PrimaryDoctorId);
             return View(patient);
@@ -134,18 +128,15 @@ namespace archi_company_mvc.Controllers
             currentPatient.LastName = patient.LastName;
             currentPatient.Address = patient.Address;
             currentPatient.PrimaryDoctorId = patient.PrimaryDoctorId;
-            currentPatient.HealthFileId = patient.HealthFileId;
             currentPatient.DateOfBirth = patient.DateOfBirth;
             currentPatient.PhoneNumber = patient.PhoneNumber;
             var result = await _userManager.UpdateAsync(currentPatient);
             if (result.Succeeded)
             {
-                ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id", patient.HealthFileId);
                 ViewData["PrimaryDoctorId"] =
                     new SelectList(_context.Set<Caregiver>(), "Id", "Id", patient.PrimaryDoctorId);
                 return RedirectToAction(nameof(Edit));
             }
-            ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id", patient.HealthFileId);
             var request = from x in _context.Caregiver select new {x.Id,  x.FirstName, x.LastName, FinalName = x.FirstName + " " + x.LastName}; 
             ViewData["PrimaryDoctorId"] = new SelectList(request, "Id", "FinalName", patient.PrimaryDoctorId);
             return View(patient);
