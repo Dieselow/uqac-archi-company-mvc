@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using archi_company_mvc.Data;
 using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
 
 namespace archi_company_mvc.ViewComponents
 {
@@ -53,6 +50,13 @@ namespace archi_company_mvc.ViewComponents
                             itemsList.Add(new ContextLink("Caregivers", "Index", "Caregivers"));
                             itemsList.Add(new ContextLink("Secretaries", "Index", "Secretaries"));
                             itemsList.Add(new ContextLink("Patients", "Index", "Patients"));
+                            break;
+                        case "Tickets": 
+                        case "ConsumableTypes": 
+                        case "Consumables":
+                            itemsList.Add(new ContextLink("Tickets", "Index", "Tickets"));
+                            itemsList.Add(new ContextLink("Consumables", "Index", "Consumables"));
+                            itemsList.Add(new ContextLink("ConsumableTypes", "Index", "Consumables types"));
                             break;
                     }
                     break;

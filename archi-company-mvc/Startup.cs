@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using archi_company_mvc.Data;
 using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Builder;
@@ -40,7 +39,7 @@ namespace archi_company_mvc
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-                options.LoginPath = "/Login";
+                options.LoginPath = "/Login/Login";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
