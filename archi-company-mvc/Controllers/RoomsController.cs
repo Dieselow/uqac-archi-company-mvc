@@ -73,6 +73,8 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(room);
                 await _context.SaveChangesAsync();
+                await _context.Entities.AddAsync(new Entity(room.Id.ToString(), "Room", room));
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(room);
@@ -110,6 +112,9 @@ namespace archi_company_mvc.Controllers
             {
                 try
                 {
+                    var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
+                    entity.setEntitySearchTags(room);
+                    _context.Entities.Update(entity);
                     _context.Update(room);
                     await _context.SaveChangesAsync();
                 }
@@ -153,6 +158,8 @@ namespace archi_company_mvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var room = await _context.Room.FindAsync(id);
+            var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
+            _context.Entities.Remove(entity);
             _context.Room.Remove(room);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

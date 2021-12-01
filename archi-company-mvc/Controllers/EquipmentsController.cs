@@ -79,6 +79,7 @@ namespace archi_company_mvc.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(equipment);
+                await _context.SaveChangesAsync();
                 _context.Entities.Add(new Entity(equipment.Id.ToString(), "Equioments", equipment));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -6,7 +6,7 @@ namespace archi_company_mvc.Models
     public class Entity : IEntity
     {
         [Key]
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string tags { get; set; }
         public string EntityId { get; set; }
         public string TableName { get; set; }
@@ -17,6 +17,14 @@ namespace archi_company_mvc.Models
             EntityId = entityId;
             TableName = tableName;
             setEntitySearchTags(entityToSaveTags);
+        }
+
+        public Entity(int id, string tags, string entityId, string tableName)
+        {
+            Id = id;
+            this.tags = tags;
+            EntityId = entityId;
+            TableName = tableName;
         }
 
         public void setEntitySearchTags(Object o)
@@ -33,7 +41,10 @@ namespace archi_company_mvc.Models
                     continue;
                 }
 
-                tags += property.Name + "=" + property.GetValue(this, null);
+                if (property.GetValue(o) != null)
+                {
+                    tags += property.Name + "=" + property.GetValue(o) + ";";   
+                }
             }
         }
 

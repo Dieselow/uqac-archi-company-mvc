@@ -49,6 +49,7 @@ namespace archi_company_mvc.Controllers
                 {
                     patient.PasswordHash = _userManager.PasswordHasher.HashPassword(patient,patient.Password);
                     await _userManager.CreateAsync(patient,patient.Password);
+                    await _context.Entities.AddAsync(new Entity(patient.Id, "AspNetUsers", patient));
                     await _context.SaveChangesAsync();
                     await _userManager.AddToRoleAsync(patient, Roles.Patient.ToString());
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
@@ -73,6 +74,7 @@ namespace archi_company_mvc.Controllers
                 {
                     secretary.PasswordHash = _userManager.PasswordHasher.HashPassword(secretary,secretary.Password);
                     await _userManager.CreateAsync(secretary,secretary.Password);
+                    await _context.Entities.AddAsync(new Entity(secretary.Id, "AspNetUsers", secretary));
                     await _context.SaveChangesAsync();
                     await _userManager.AddToRoleAsync(secretary, Roles.Secretary.ToString());
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
@@ -97,6 +99,7 @@ namespace archi_company_mvc.Controllers
                 {
                     caregiver.PasswordHash = _userManager.PasswordHasher.HashPassword(caregiver,caregiver.Password);
                     await _userManager.CreateAsync(caregiver,caregiver.Password);
+                    await _context.Entities.AddAsync(new Entity(caregiver.Id, "AspNetUsers", caregiver));
                     await _context.SaveChangesAsync();
                     await _userManager.AddToRoleAsync(caregiver, Roles.Caregiver.ToString());
                     return RedirectToAction(actionName: "Index", controllerName: "Home");

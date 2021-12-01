@@ -59,6 +59,7 @@ namespace archi_company_mvc.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(consumableType);
+                await _context.SaveChangesAsync();
                 _context.Entities.Add(new Entity(consumableType.Id.ToString(), "ConsumableTypes", consumableType));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

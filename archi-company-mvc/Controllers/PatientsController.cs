@@ -148,6 +148,9 @@ namespace archi_company_mvc.Controllers
             var result = await _userManager.UpdateAsync(currentPatient);
             if (result.Succeeded)
             {
+                var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id);
+                entity.setEntitySearchTags(currentPatient);
+                _context.Entities.Update(entity);
                 ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id", patient.HealthFileId);
                 ViewData["PrimaryDoctorId"] =
                     new SelectList(_context.Set<Caregiver>(), "Id", "Id", patient.PrimaryDoctorId);
@@ -186,6 +189,8 @@ namespace archi_company_mvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var patient = await _context.Patient.FindAsync(id);
+            var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id);
+            _context.Entities.Remove(entity);
             _context.Patient.Remove(patient);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

@@ -72,6 +72,8 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(equipmentType);
                 await _context.SaveChangesAsync();
+                _context.Entities.Add(new Entity(equipmentType.Id.ToString(), "EquipmentTypes", equipmentType));
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(equipmentType);
@@ -109,6 +111,9 @@ namespace archi_company_mvc.Controllers
             {
                 try
                 {
+                    var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
+                    entity.setEntitySearchTags(equipmentType);
+                    _context.Entities.Update(entity);
                     _context.Update(equipmentType);
                     await _context.SaveChangesAsync();
                 }
@@ -152,6 +157,8 @@ namespace archi_company_mvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var equipmentType = await _context.EquipmentType.FindAsync(id);
+            var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
+            _context.Entities.Remove(entity);
             _context.EquipmentType.Remove(equipmentType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

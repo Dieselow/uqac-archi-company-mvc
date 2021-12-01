@@ -122,6 +122,9 @@ namespace archi_company_mvc.Controllers
             var result = await _userManager.UpdateAsync(currentSecretary);
             if (result.Succeeded)
             {
+                var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id);
+                entity.setEntitySearchTags(currentSecretary);
+                _context.Entities.Update(entity);
                 return RedirectToAction(nameof(Edit));
             }
 
@@ -153,6 +156,8 @@ namespace archi_company_mvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var secretary = await _context.Secretary.FindAsync(id);
+            var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
+            _context.Entities.Remove(entity);
             _context.Secretary.Remove(secretary);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

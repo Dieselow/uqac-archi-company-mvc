@@ -71,6 +71,8 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(healthFile);
                 await _context.SaveChangesAsync();
+                _context.Entities.Add(new Entity(healthFile.Id.ToString(), "Healthfile", healthFile));
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(healthFile);
@@ -108,6 +110,9 @@ namespace archi_company_mvc.Controllers
             {
                 try
                 {
+                    var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
+                    entity.setEntitySearchTags(healthFile);
+                    _context.Entities.Update(entity);
                     _context.Update(healthFile);
                     await _context.SaveChangesAsync();
                 }
@@ -151,6 +156,8 @@ namespace archi_company_mvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var healthFile = await _context.HealthFile.FindAsync(id);
+            var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
+            _context.Entities.Remove(entity);
             _context.HealthFile.Remove(healthFile);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
