@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using archi_company_mvc.Constants;
+using archi_company_mvc.Data;
 using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -29,7 +30,7 @@ namespace archi_company_mvc.Seeds
         }
         
         public static async Task SeedUsers(UserManager<User> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager, DatabaseContext context)
         {
             var defaultPatient = new Patient
             {
@@ -61,6 +62,10 @@ namespace archi_company_mvc.Seeds
             await userManager.AddToRoleAsync(defaultSecretary, Roles.Secretary.ToString());
             await userManager.AddToRoleAsync(defaultCaregiver, Roles.Caregiver.ToString());
             await userManager.AddToRoleAsync(defaultPatient, Roles.Patient.ToString());
+            await context.Entities.AddAsync(new Entity(defaultCaregiver.Id, "AspNetUsers", defaultCaregiver));
+            await context.Entities.AddAsync(new Entity(defaultPatient.Id, "AspNetUsers", defaultPatient));
+            await context.Entities.AddAsync(new Entity(defaultSecretary.Id, "AspNetUsers", defaultSecretary));
+            await context.SaveChangesAsync();
         }
     }
 }

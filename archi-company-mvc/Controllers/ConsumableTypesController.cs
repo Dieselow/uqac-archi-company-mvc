@@ -100,8 +100,9 @@ namespace archi_company_mvc.Controllers
                 try
                 {
                     var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == consumableType.Id.ToString());
-                    entity.setEntitySearchTags(consumableType);
                     _context.Update(consumableType);
+                    await _context.SaveChangesAsync(); 
+                    entity.setEntitySearchTags(consumableType);
                     _context.Entities.Update(entity);
                     await _context.SaveChangesAsync();
                 }

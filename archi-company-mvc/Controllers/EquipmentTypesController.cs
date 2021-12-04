@@ -112,9 +112,10 @@ namespace archi_company_mvc.Controllers
                 try
                 {
                     var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
+                    _context.Update(equipmentType);
+                    await _context.SaveChangesAsync();
                     entity.setEntitySearchTags(equipmentType);
                     _context.Entities.Update(entity);
-                    _context.Update(equipmentType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

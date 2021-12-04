@@ -29,7 +29,8 @@ namespace archi_company_mvc.Models
 
         public void setEntitySearchTags(Object o)
         {
-            if (o.GetType() == typeof(User))
+            tags = "";
+            if (o.GetType().IsSubclassOf(typeof(User)))
             {
              computeUserTags(o);
              return;
@@ -52,14 +53,14 @@ namespace archi_company_mvc.Models
         {
             foreach (var property in _userPropertiesNames)
             {
-                var propertyValue = user.GetType().GetProperty(property)?.GetValue(this);
+                var propertyValue = user.GetType().GetProperty(property)?.GetValue(user);
                 if (propertyValue != null)
                 {
                     tags += property + "=" + propertyValue + ";";
                 }
             }
 
-            tags += "Discriminator=" + GetType().Name + ";";
+            tags += "Discriminator=" + user.GetType().Name + ";";
         }
     }
     

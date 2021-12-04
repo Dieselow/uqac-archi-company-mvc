@@ -80,7 +80,7 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(equipment);
                 await _context.SaveChangesAsync();
-                _context.Entities.Add(new Entity(equipment.Id.ToString(), "Equioments", equipment));
+                _context.Entities.Add(new Entity(equipment.Id.ToString(), "Equipment", equipment));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -122,8 +122,9 @@ namespace archi_company_mvc.Controllers
                 try
                 {
                     var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == equipment.Id.ToString());
-                    entity.setEntitySearchTags(equipment);
                     _context.Update(equipment);
+                    await _context.SaveChangesAsync();
+                    entity.setEntitySearchTags(equipment);
                     _context.Entities.Update(entity);
                     await _context.SaveChangesAsync();
                 }

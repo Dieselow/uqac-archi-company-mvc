@@ -118,10 +118,11 @@ namespace archi_company_mvc.Controllers
             currentCaregiver.EmploymentDate = caregiver.EmploymentDate;
             currentCaregiver.LicenceNumber = caregiver.LicenceNumber;
             var result = await _userManager.UpdateAsync(currentCaregiver);
-            currentEntity.setEntitySearchTags(caregiver);
-            _context.Entities.Add(currentEntity);
             if (result.Succeeded)
             {
+                currentEntity.setEntitySearchTags(currentCaregiver);
+                _context.Entities.Update(currentEntity);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Edit));
             }
 

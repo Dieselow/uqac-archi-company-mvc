@@ -125,6 +125,7 @@ namespace archi_company_mvc.Controllers
                 var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id);
                 entity.setEntitySearchTags(currentSecretary);
                 _context.Entities.Update(entity);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Edit));
             }
 

@@ -91,7 +91,7 @@ namespace archi_company_mvc
                         var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                         Seeds.DefaultRoles.SeedAsync(userManager, roleManager).Wait();
                         Seeds.DefaultUsers.SeedSuperAdminAsync(userManager, roleManager).Wait();
-                        Seeds.DefaultUsers.SeedUsers(userManager, roleManager).Wait();
+                        Seeds.DefaultUsers.SeedUsers(userManager, roleManager,context).Wait();
                         logger.LogInformation("Finished Seeding Default Data");
                         logger.LogInformation("Application Starting");
                     }
