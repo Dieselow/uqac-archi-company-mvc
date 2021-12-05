@@ -15,12 +15,10 @@ namespace archi_company_mvc.Controllers
     public class EquipmentsController : Controller
     {
         private readonly DatabaseContext _context;
-        private readonly UserManager<User> _userManager;
 
-        public EquipmentsController(DatabaseContext context, UserManager<User> userManager)
+        public EquipmentsController(DatabaseContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         // GET: Equipments

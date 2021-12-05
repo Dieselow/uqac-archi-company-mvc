@@ -14,12 +14,10 @@ namespace archi_company_mvc.Controllers
     {
         private readonly DatabaseContext _context;
 
-        private readonly UserManager<User> _userManager;
 
-        public ConsumableTypesController(DatabaseContext context, UserManager<User> userManager)
+        public ConsumableTypesController(DatabaseContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         // GET: ConsumableTypes

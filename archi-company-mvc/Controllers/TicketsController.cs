@@ -14,12 +14,10 @@ namespace archi_company_mvc.Controllers
     public class TicketsController : Controller
     {
         private readonly DatabaseContext _context;
-        private readonly UserManager<User> _userManager;
 
-        public TicketsController(DatabaseContext context, UserManager<User> userManager)
+        public TicketsController(DatabaseContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         // GET: Tickets

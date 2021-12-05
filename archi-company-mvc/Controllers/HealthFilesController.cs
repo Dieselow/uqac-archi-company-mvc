@@ -12,12 +12,10 @@ namespace archi_company_mvc.Controllers
     public class HealthFilesController : Controller
     {
         private readonly DatabaseContext _context;
-        private readonly UserManager<User> _userManager;
 
-        public HealthFilesController(DatabaseContext context, UserManager<User> userManager)
+        public HealthFilesController(DatabaseContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
 

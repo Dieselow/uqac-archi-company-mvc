@@ -14,12 +14,10 @@ namespace archi_company_mvc.Controllers
     public class RoomsController : Controller
     {
         private readonly DatabaseContext _context;
-        private readonly UserManager<User> _userManager;
 
-        public RoomsController(DatabaseContext context, UserManager<User> userManager)
+        public RoomsController(DatabaseContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         // GET: Rooms
