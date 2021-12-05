@@ -1,5 +1,3 @@
-using System;
-
 namespace archi_company_mvc.Models
 {
     public class ErrorViewModel

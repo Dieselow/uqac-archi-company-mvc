@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using archi_company_mvc.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace archi_company_mvc.Controllers
 {
-    [Authorize(Roles = "Secretary")]
+    [Authorize(Roles = "Admin,Secretary")]
     public class SecretariesController : Controller
     {
         private readonly DatabaseContext _context;
