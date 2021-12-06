@@ -72,7 +72,7 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(equipmentType);
                 await _context.SaveChangesAsync();
-                _context.Entities.Add(new Entity(equipmentType.Id.ToString(), "EquipmentTypes", equipmentType,equipmentType.GetController()));
+                _context.Entities.Add(new Entity(equipmentType.Id.ToString(), "EquipmentTypes", equipmentType,equipmentType.GetController(),equipmentType.GetType().Name + ": "+equipmentType.Name));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

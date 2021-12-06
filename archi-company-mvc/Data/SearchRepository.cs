@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using archi_company_mvc.Controllers;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace archi_company_mvc.Data
@@ -23,14 +24,14 @@ namespace archi_company_mvc.Data
             return tables;
         }
 
-        public async Task<List<EntityAutocompleteResponse>> getAutocompleteEntities(string search)
+        public async Task<List<EntityAutocompleteResponse>> GetAutocompleteEntities(string search, string baseUrl)
         {
             List<EntityAutocompleteResponse> responses = new List<EntityAutocompleteResponse>();
             List<Entity> entities = await _context.Entities.Where(entity => entity.tags.Contains(search)).Take(5)
                 .ToListAsync();
             foreach (var entity in entities)
             {
-             responses.Add(new EntityAutocompleteResponse(entity.EntityId,entity.ControllerName,"Details"));   
+             responses.Add(new EntityAutocompleteResponse(entity.EntityId, baseUrl + "/" + entity.ControllerName + "/Details/" + entity.EntityId));   
             }
 
             return responses;

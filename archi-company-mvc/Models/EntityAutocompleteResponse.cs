@@ -3,14 +3,12 @@ namespace archi_company_mvc.Controllers
     public class EntityAutocompleteResponse
     {
         public string Id;
-        public string ControllerName;
-        public string DetailsAction;
+        public string EntityUrl;
 
-        public EntityAutocompleteResponse(string id, string controllerName, string detailsAction)
+        public EntityAutocompleteResponse(string id, string entityUrl)
         {
             Id = id;
-            ControllerName = controllerName;
-            DetailsAction = detailsAction;
+            EntityUrl = entityUrl;
         }
     }
 }

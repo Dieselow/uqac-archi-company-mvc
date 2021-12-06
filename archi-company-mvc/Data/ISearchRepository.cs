@@ -9,6 +9,6 @@ namespace archi_company_mvc.Data
     public interface ISearchRepository: IDisposable
     {
         Task<List<Entity>> searchEntities(String search);
-        Task<List<EntityAutocompleteResponse>> getAutocompleteEntities(String search);
+        Task<List<EntityAutocompleteResponse>> GetAutocompleteEntities(string search, string baseUrl);
     }
 }

@@ -28,7 +28,7 @@ namespace archi_company_mvc.Seeds
                 }
             }
         }
-        
+
         public static async Task SeedUsers(UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager, DatabaseContext context)
         {
@@ -38,7 +38,7 @@ namespace archi_company_mvc.Seeds
                 Email = "patient@patient.com",
                 EmailConfirmed = true,
                 FirstName = "Patient",
-                LastName ="Patient"
+                LastName = "Patient"
             };
             var defaultSecretary = new Secretary
             {
@@ -46,7 +46,7 @@ namespace archi_company_mvc.Seeds
                 Email = "secretary@secretary.com",
                 EmailConfirmed = true,
                 FirstName = "Secretary",
-                LastName ="Secretary"
+                LastName = "Secretary"
             };
             var defaultCaregiver = new Caregiver
             {
@@ -54,7 +54,7 @@ namespace archi_company_mvc.Seeds
                 Email = "caregiver@caregiver.com",
                 EmailConfirmed = true,
                 FirstName = "Caregiver",
-                LastName ="Caregiver"
+                LastName = "Caregiver"
             };
             await userManager.CreateAsync(defaultCaregiver, "Password1*");
             await userManager.CreateAsync(defaultSecretary, "Password1*");
@@ -62,9 +62,12 @@ namespace archi_company_mvc.Seeds
             await userManager.AddToRoleAsync(defaultSecretary, Roles.Secretary.ToString());
             await userManager.AddToRoleAsync(defaultCaregiver, Roles.Caregiver.ToString());
             await userManager.AddToRoleAsync(defaultPatient, Roles.Patient.ToString());
-            await context.Entities.AddAsync(new Entity(defaultCaregiver.Id, "AspNetUsers", defaultCaregiver,defaultCaregiver.GetController()));
-            await context.Entities.AddAsync(new Entity(defaultPatient.Id, "AspNetUsers", defaultPatient,defaultPatient.GetController()));
-            await context.Entities.AddAsync(new Entity(defaultSecretary.Id, "AspNetUsers", defaultSecretary,defaultSecretary.GetController()));
+            await context.Entities.AddAsync(new Entity(defaultCaregiver.Id, "AspNetUsers", defaultCaregiver,
+                defaultCaregiver.GetController(), defaultCaregiver.GetType().Name + ": " + defaultCaregiver.UserName));
+            await context.Entities.AddAsync(new Entity(defaultPatient.Id, "AspNetUsers", defaultPatient,
+                defaultPatient.GetController(), defaultPatient.GetType().Name + ": " + defaultPatient.UserName));
+            await context.Entities.AddAsync(new Entity(defaultSecretary.Id, "AspNetUsers", defaultSecretary,
+                defaultSecretary.GetController(), defaultSecretary.GetType().Name + ": " + defaultSecretary.UserName));
             await context.SaveChangesAsync();
         }
     }

@@ -61,7 +61,7 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
-                _context.Entities.Add(new Entity(ticket.Id.ToString(), "Ticket", ticket,ticket.GetController()));
+                _context.Entities.Add(new Entity(ticket.Id.ToString(), "Ticket", ticket,ticket.GetController(),ticket.GetType().Name + ": "+ticket.Name));
                 await _context.SaveChangesAsync();
                 foreach(var consumableId in ticket.ConsumablesIds){
                     Consumable toUpdate = await _context.Consumable.FindAsync(consumableId);

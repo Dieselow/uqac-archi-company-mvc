@@ -27,7 +27,6 @@ namespace archi_company_mvc.Controllers
         [Authorize(Roles = "Caregiver")]
         public async Task<IActionResult> Index()
         {
-           
             return View(await _context.HealthFile.ToListAsync());
         }
 
@@ -41,11 +40,11 @@ namespace archi_company_mvc.Controllers
 
             var healthFile = await _context.HealthFile
                 .FirstOrDefaultAsync(m => m.Id == id);
-          /**  var currentCaregiver = _userManager.GetUserAsync(HttpContext.User);
-            if (currentCaregiver.Id.ToString() == healthFile.Patient.PrimaryDoctorId)
-            {
-                
-            }**/
+            /**  var currentCaregiver = _userManager.GetUserAsync(HttpContext.User);
+              if (currentCaregiver.Id.ToString() == healthFile.Patient.PrimaryDoctorId)
+              {
+                  
+              }**/
             if (healthFile == null)
             {
                 return NotFound();
@@ -65,16 +64,19 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Medications,ChronicConditions,EmergencyContact")] HealthFile healthFile)
+        public async Task<IActionResult> Create(
+            [Bind("Id,Medications,ChronicConditions,EmergencyContact")] HealthFile healthFile)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(healthFile);
                 await _context.SaveChangesAsync();
-                _context.Entities.Add(new Entity(healthFile.Id.ToString(), "Healthfile", healthFile,healthFile.GetController()));
+                _context.Entities.Add(new Entity(healthFile.Id.ToString(), "Healthfile", healthFile,
+                    healthFile.GetController(), healthFile.GetType().Name + ": " + healthFile.Patient.UserName));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(healthFile);
         }
 
@@ -91,6 +93,7 @@ namespace archi_company_mvc.Controllers
             {
                 return NotFound();
             }
+
             return View(healthFile);
         }
 
@@ -99,7 +102,8 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Medications,ChronicConditions,EmergencyContact")] HealthFile healthFile)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("Id,Medications,ChronicConditions,EmergencyContact")] HealthFile healthFile)
         {
             if (id != healthFile.Id)
             {
@@ -128,8 +132,10 @@ namespace archi_company_mvc.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(healthFile);
         }
 
