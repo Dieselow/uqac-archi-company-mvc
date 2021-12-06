@@ -71,7 +71,7 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(healthFile);
                 await _context.SaveChangesAsync();
-                _context.Entities.Add(new Entity(healthFile.Id.ToString(), "Healthfile", healthFile));
+                _context.Entities.Add(new Entity(healthFile.Id.ToString(), "Healthfile", healthFile,healthFile.GetController()));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

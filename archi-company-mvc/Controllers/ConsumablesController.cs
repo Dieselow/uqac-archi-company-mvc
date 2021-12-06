@@ -66,7 +66,7 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(consumable);
                 await _context.SaveChangesAsync();
-                await _context.Entities.AddAsync(new Entity(consumable.Id.ToString(), "Consumable", consumable));
+                await _context.Entities.AddAsync(new Entity(consumable.Id.ToString(), "Consumable", consumable,consumable.GetController()));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

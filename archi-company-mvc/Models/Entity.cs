@@ -10,21 +10,24 @@ namespace archi_company_mvc.Models
         public string tags { get; set; }
         public string EntityId { get; set; }
         public string TableName { get; set; }
+        public string ControllerName { get; set; }
         private readonly string[] _userPropertiesNames = { "FirstName", "LastName", "UserName", "Email" };
 
-        public Entity(string entityId, string tableName, Object entityToSaveTags)
+        public Entity(string entityId, string tableName, Object entityToSaveTags, string controllerName)
         {
             EntityId = entityId;
             TableName = tableName;
+            ControllerName = controllerName;
             setEntitySearchTags(entityToSaveTags);
         }
 
-        public Entity(int id, string tags, string entityId, string tableName)
+        public Entity(int id, string tags, string entityId, string tableName, string controllerName)
         {
             Id = id;
             this.tags = tags;
             EntityId = entityId;
             TableName = tableName;
+            ControllerName = controllerName;
         }
 
         public void setEntitySearchTags(Object o)

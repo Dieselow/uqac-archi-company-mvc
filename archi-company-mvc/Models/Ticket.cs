@@ -21,5 +21,9 @@ namespace archi_company_mvc.Models
         [Display(Name="Consumable")]
         public virtual ICollection<Consumable> Consumables {get; set;}
 
+        public string GetController()
+        {
+            return "Tickets";
+        }
     }
 }

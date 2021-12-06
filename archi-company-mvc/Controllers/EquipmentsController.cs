@@ -80,7 +80,7 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(equipment);
                 await _context.SaveChangesAsync();
-                _context.Entities.Add(new Entity(equipment.Id.ToString(), "Equipment", equipment));
+                _context.Entities.Add(new Entity(equipment.Id.ToString(), "Equipment", equipment,equipment.GetController()));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

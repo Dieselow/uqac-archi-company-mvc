@@ -73,7 +73,7 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(room);
                 await _context.SaveChangesAsync();
-                await _context.Entities.AddAsync(new Entity(room.Id.ToString(), "Room", room));
+                await _context.Entities.AddAsync(new Entity(room.Id.ToString(), "Room", room,room.GetController()));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

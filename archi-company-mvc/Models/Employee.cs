@@ -15,6 +15,5 @@ namespace archi_company_mvc.Models
         [Display(Name="Employment Date")]
         [DataType(DataType.Date)]
         public DateTime EmploymentDate { get; set; }
-
     }
 }
