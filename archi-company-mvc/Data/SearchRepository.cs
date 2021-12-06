@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
+using archi_company_mvc.Controllers;
 using archi_company_mvc.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +17,25 @@ namespace archi_company_mvc.Data
         {
             _context = context;
         }
-        public List<Entity> searchEntities(string search)
+        public async Task<List<Entity>> searchEntities(string search)
         {
-            IList<string> tables = ListTables();
-            throw new NotImplementedException();
+            List<Entity> tables = await _context.Entities.Where(entity => entity.tags.Contains(search)).ToListAsync();
+            return tables;
         }
+
+        public async Task<List<EntityAutocompleteResponse>> getAutocompleteEntities(string search)
+        {
+            List<EntityAutocompleteResponse> responses = new List<EntityAutocompleteResponse>();
+            List<Entity> entities = await _context.Entities.Where(entity => entity.tags.Contains(search)).Take(5)
+                .ToListAsync();
+            foreach (var entity in entities)
+            {
+             responses.Add(new EntityAutocompleteResponse(entity.EntityId,entity.ControllerName,"Details"));   
+            }
+
+            return responses;
+        }
+
         private IList<string> ListTables()
         {
             return _context.Model.GetEntityTypes()

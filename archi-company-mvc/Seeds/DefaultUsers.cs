@@ -62,9 +62,9 @@ namespace archi_company_mvc.Seeds
             await userManager.AddToRoleAsync(defaultSecretary, Roles.Secretary.ToString());
             await userManager.AddToRoleAsync(defaultCaregiver, Roles.Caregiver.ToString());
             await userManager.AddToRoleAsync(defaultPatient, Roles.Patient.ToString());
-            await context.Entities.AddAsync(new Entity(defaultCaregiver.Id, "AspNetUsers", defaultCaregiver));
-            await context.Entities.AddAsync(new Entity(defaultPatient.Id, "AspNetUsers", defaultPatient));
-            await context.Entities.AddAsync(new Entity(defaultSecretary.Id, "AspNetUsers", defaultSecretary));
+            await context.Entities.AddAsync(new Entity(defaultCaregiver.Id, "AspNetUsers", defaultCaregiver,defaultCaregiver.GetController()));
+            await context.Entities.AddAsync(new Entity(defaultPatient.Id, "AspNetUsers", defaultPatient,defaultPatient.GetController()));
+            await context.Entities.AddAsync(new Entity(defaultSecretary.Id, "AspNetUsers", defaultSecretary,defaultSecretary.GetController()));
             await context.SaveChangesAsync();
         }
     }
