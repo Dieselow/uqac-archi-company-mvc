@@ -137,7 +137,7 @@ namespace archi_company_mvc.Controllers
                 entity.setEntitySearchTags(currentPatient);
                 _context.Entities.Update(entity);
                 await _context.SaveChangesAsync();
-                ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id", patient.HealthFileId);
+                ViewData["HealthFileId"] = new SelectList(_context.Set<HealthFile>(), "Id", "Id", patient.HealthFile);
                 ViewData["PrimaryDoctorId"] =
                     new SelectList(_context.Set<Caregiver>(), "Id", "Id", patient.PrimaryDoctorId);
                 return RedirectToAction(nameof(Edit));
