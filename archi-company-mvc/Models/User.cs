@@ -31,5 +31,10 @@ namespace archi_company_mvc.Models
         {
             return GetType().Name;
         }
+
+        public virtual string getViewAction()
+        {
+            return "View";
+        }
     }
 }

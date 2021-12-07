@@ -19,5 +19,9 @@ namespace archi_company_mvc.Models
 
         public virtual Ticket Ticket{get; set;}
 
+        public string GetController()
+        {
+            return "Consumables";
+        }
     }
 }

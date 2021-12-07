@@ -62,10 +62,16 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
+                _context.Entities.Add(new Entity(ticket.Id.ToString(), "Ticket", ticket,ticket.GetController(),ticket.GetType().Name + ": "+ticket.Name));
+                await _context.SaveChangesAsync();
                 foreach(var consumableId in ticket.ConsumablesIds){
-                    Consumable toUpdate = _context.Consumable.Find(consumableId);
+                    Consumable toUpdate = await _context.Consumable.FindAsync(consumableId);
+                    var entityToUpdate =
+                        await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == consumableId.ToString());
                     toUpdate.TicketId = ticket.Id;
+                    entityToUpdate.setEntitySearchTags(toUpdate);
                     _context.Update(toUpdate);
+                    _context.Entities.Update(entityToUpdate);
                 }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -107,7 +113,11 @@ namespace archi_company_mvc.Controllers
             {
                 try
                 {
+                    var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
                     _context.Update(ticket);
+                    await _context.SaveChangesAsync();
+                    entity.setEntitySearchTags(ticket);
+                    _context.Entities.Update(entity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -149,9 +159,15 @@ namespace archi_company_mvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var ticket = await _context.Ticket.Include(m => m.Consumables).FirstOrDefaultAsync(m => m.Id == id);
+            var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
+            _context.Entities.Remove(entity);
             foreach(var consumable in ticket.Consumables){
                     consumable.TicketId = null;
+                    var consumableEntity =
+                        await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == consumable.Id.ToString());
+                    consumableEntity.setEntitySearchTags(consumable);
                     _context.Update(consumable);
+                    _context.Entities.Update(consumableEntity);
             }
             _context.Ticket.Remove(ticket);
             await _context.SaveChangesAsync();

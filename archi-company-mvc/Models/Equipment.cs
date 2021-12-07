@@ -23,6 +23,9 @@ namespace archi_company_mvc.Models
 
         [Searchable]
         public virtual Room Room { get; set; }
-
+        public string GetController()
+        {
+            return "Equipments";
+        }
     }
 }

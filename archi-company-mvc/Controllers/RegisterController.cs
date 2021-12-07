@@ -44,8 +44,10 @@ namespace archi_company_mvc.Controllers
                 var check = _context.Patient.FirstOrDefault(s => s.Email == patient.Email);
                 if (check == null)
                 {
-                    patient.PasswordHash = _userManager.PasswordHasher.HashPassword(patient,patient.Password);
-                    await _userManager.CreateAsync(patient,patient.Password);
+                    patient.PasswordHash = _userManager.PasswordHasher.HashPassword(patient, patient.Password);
+                    await _userManager.CreateAsync(patient, patient.Password);
+                    await _context.Entities.AddAsync(new Entity(patient.Id, "AspNetUsers", patient,
+                        patient.GetController(), patient.GetType().Name + ": " + patient.UserName));
                     await _context.SaveChangesAsync();
                     await _userManager.AddToRoleAsync(patient, Roles.Patient.ToString());
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
@@ -68,8 +70,10 @@ namespace archi_company_mvc.Controllers
                 var check = _context.Secretary.FirstOrDefault(s => s.Email == secretary.Email);
                 if (check == null)
                 {
-                    secretary.PasswordHash = _userManager.PasswordHasher.HashPassword(secretary,secretary.Password);
-                    await _userManager.CreateAsync(secretary,secretary.Password);
+                    secretary.PasswordHash = _userManager.PasswordHasher.HashPassword(secretary, secretary.Password);
+                    await _userManager.CreateAsync(secretary, secretary.Password);
+                    await _context.Entities.AddAsync(new Entity(secretary.Id, "AspNetUsers", secretary,
+                        secretary.GetController(), secretary.GetType().Name + ": " + secretary.UserName));
                     await _context.SaveChangesAsync();
                     await _userManager.AddToRoleAsync(secretary, Roles.Secretary.ToString());
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
@@ -92,8 +96,10 @@ namespace archi_company_mvc.Controllers
                 var check = _context.Caregiver.FirstOrDefault(s => s.Email == caregiver.Email);
                 if (check == null)
                 {
-                    caregiver.PasswordHash = _userManager.PasswordHasher.HashPassword(caregiver,caregiver.Password);
-                    await _userManager.CreateAsync(caregiver,caregiver.Password);
+                    caregiver.PasswordHash = _userManager.PasswordHasher.HashPassword(caregiver, caregiver.Password);
+                    await _userManager.CreateAsync(caregiver, caregiver.Password);
+                    await _context.Entities.AddAsync(new Entity(caregiver.Id, "AspNetUsers", caregiver,
+                        caregiver.GetController(), caregiver.GetType().Name + ": " + caregiver.UserName));
                     await _context.SaveChangesAsync();
                     await _userManager.AddToRoleAsync(caregiver, Roles.Caregiver.ToString());
                     return RedirectToAction(actionName: "Index", controllerName: "Home");

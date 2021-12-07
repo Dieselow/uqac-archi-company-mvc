@@ -1,7 +1,59 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model archi_company_mvc.Controllers.EntityAutocompleteResponse  
 
+@if (User.IsInRole("Admin"))
+{
+    <script type="text/javascript">    
+    $(document).ready(function () {    
+        $("#Search").autocomplete({
+              source: function (request, response) {    
+                $.ajax({    
+                    url: "/Home/Search",    
+                    type: "POST",    
+                    dataType: "json",    
+                    data: { term: request.term },    
+                    success: function (data) {    
+                        response($.map(data.data, function (item) {    
+                        console.log(item);
+                            return { label: item.name, value: item.entityUrl};    
+                        }))    
+                    },
+                     error: function (response) {
+                        alert(response.responseText);
+                     },
+                     failure: function (response) {
+                        alert(response.responseText);
+                     }    
+                })   
+},
+            minLength:1,
+            select: function( event, ui ) {
+                console.log(ui); 
+                window.location.href = ui.item.value;
+            },    
+        });    
+    });
+</script>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr/>
+
+        <div class="form-group">
+
+            <div class="col-md-12">
+                @Html.TextBox("search", null, new { id = "Search", Class = "autosuggest" })
+            </div>
+        </div>
+
+    </div>
+}
+}
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>

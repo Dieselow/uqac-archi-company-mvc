@@ -74,6 +74,8 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(equipment);
                 await _context.SaveChangesAsync();
+                _context.Entities.Add(new Entity(equipment.Id.ToString(), "Equipment", equipment,equipment.GetController(),equipment.GetType().Name + ": "+  _context.EquipmentType.Find(equipment.EquipmentTypeId).Name));
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(equipment);
@@ -109,7 +111,11 @@ namespace archi_company_mvc.Controllers
             {
                 try
                 {
+                    var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == equipment.Id.ToString());
                     _context.Update(equipment);
+                    await _context.SaveChangesAsync();
+                    entity.setEntitySearchTags(equipment);
+                    _context.Entities.Update(entity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -151,7 +157,9 @@ namespace archi_company_mvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var equipment = await _context.Equipment.FindAsync(id);
+            var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
             _context.Equipment.Remove(equipment);
+            _context.Entities.Remove(entity);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

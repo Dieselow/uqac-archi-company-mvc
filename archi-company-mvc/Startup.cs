@@ -25,7 +25,7 @@ namespace archi_company_mvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddRazorPages().AddNewtonsoftJson();
 
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseContext")));
@@ -33,6 +33,8 @@ namespace archi_company_mvc
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
+            services.AddScoped<ISearchRepository, SearchRepository>();
+
             services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
@@ -90,7 +92,7 @@ namespace archi_company_mvc
                         var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                         Seeds.DefaultRoles.SeedAsync(userManager, roleManager).Wait();
                         Seeds.DefaultUsers.SeedSuperAdminAsync(userManager, roleManager).Wait();
-                        Seeds.DefaultUsers.SeedUsers(userManager, roleManager).Wait();
+                        Seeds.DefaultUsers.SeedUsers(userManager, roleManager,context).Wait();
                         logger.LogInformation("Finished Seeding Default Data");
                         logger.LogInformation("Application Starting");
                     }

@@ -39,8 +39,12 @@ namespace archi_company_mvc.Controllers
                 healthFile.PatientId = Id;
                 _context.Add(healthFile);
                 await _context.SaveChangesAsync();
+                _context.Entities.Add(new Entity(healthFile.Id.ToString(), "Healthfile", healthFile,
+                    healthFile.GetController(), healthFile.GetType().Name + ": " + healthFile.Patient.UserName));
+                await _context.SaveChangesAsync();
                 return Redirect(Url.Action("Index", "Patients"));
             }
+
             return View(healthFile);
         }
 
@@ -58,6 +62,7 @@ namespace archi_company_mvc.Controllers
             {
                 return NotFound();
             }
+
             return View(healthFile);
         }
 
@@ -78,7 +83,11 @@ namespace archi_company_mvc.Controllers
             {
                 try
                 {
+                    var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
                     _context.Update(healthFile);
+                    await _context.SaveChangesAsync();
+                    entity.setEntitySearchTags(healthFile);
+                    _context.Entities.Update(entity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -95,6 +104,7 @@ namespace archi_company_mvc.Controllers
                 //return Redirect(Url.Action("Details", "Patients")+"/"+patientID); -- pour revenir directement sur les d�tails d'un patient.
                 return Redirect(Url.Action("Index", "Patients"));
             }
+
             return View(healthFile);
         }
 

@@ -10,5 +10,9 @@ namespace archi_company_mvc.Models
 
         [Searchable(true)]
         public string Name { get; set; }
+        public string GetController()
+        {
+            return "EquipmentTypes";
+        }
     }
 }

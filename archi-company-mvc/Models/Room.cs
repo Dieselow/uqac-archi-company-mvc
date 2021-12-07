@@ -11,5 +11,9 @@ namespace archi_company_mvc.Models
         public string Name { get; set; }
 
         public virtual ICollection<Equipment> Equipments { get; set; }
+        public string GetController()
+        {
+            return "Rooms";
+        }
     }
 }

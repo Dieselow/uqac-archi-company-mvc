@@ -16,8 +16,10 @@ namespace archi_company_mvc.Models
         public string EmergencyContact { get; set; }
 
         public string PatientId {get; set;}
-
-        public virtual Patient Patient{get; set;}
-
+        public virtual Patient Patient { get; set;}
+        public string GetController()
+        {
+            return "HealthFiles";
+        }
     }
 }

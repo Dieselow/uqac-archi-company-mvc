@@ -13,6 +13,9 @@ namespace archi_company_mvc.Models
         public string Brand { get; set; }
 
         public virtual ICollection<Consumable> Consumables { get; set;}
-
+        public string GetController()
+        {
+            return "ConsumableTypes";
+        }
     }
 }

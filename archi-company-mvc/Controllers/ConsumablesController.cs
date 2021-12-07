@@ -50,7 +50,10 @@ namespace archi_company_mvc.Controllers
         // GET: Consumables/Create
         public IActionResult Create()
         {
-            ViewData["ConsumableType"] = new SelectList(from x in _context.ConsumableType select new {x.Id, x.Name, x.Brand, BrandName = x.Brand + " " + x.Name}, "Id", "BrandName");
+            ViewData["ConsumableType"] =
+                new SelectList(
+                    from x in _context.ConsumableType
+                    select new { x.Id, x.Name, x.Brand, BrandName = x.Brand + " " + x.Name }, "Id", "BrandName");
             return View();
         }
 
@@ -65,9 +68,13 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(consumable);
                 await _context.SaveChangesAsync();
+                await _context.Entities.AddAsync(new Entity(consumable.Id.ToString(), "Consumable", consumable,consumable.GetController(),consumable.GetType().Name + ": "+ _context.ConsumableType.Find(consumable.ConsumableTypeId).Brand));
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConsumableTypeId"] = new SelectList(_context.Set<ConsumableType>(), "Id", "Id", consumable.ConsumableTypeId);
+
+            ViewData["ConsumableTypeId"] =
+                new SelectList(_context.Set<ConsumableType>(), "Id", "Id", consumable.ConsumableTypeId);
             return View(consumable);
         }
 
@@ -84,7 +91,12 @@ namespace archi_company_mvc.Controllers
             {
                 return NotFound();
             }
-            ViewData["ConsumableType"] = new SelectList(from x in _context.ConsumableType select new {x.Id, x.Name, x.Brand, BrandName = x.Brand + " " + x.Name}, "Id", "BrandName", consumable.ConsumableTypeId);
+
+            ViewData["ConsumableType"] =
+                new SelectList(
+                    from x in _context.ConsumableType
+                    select new { x.Id, x.Name, x.Brand, BrandName = x.Brand + " " + x.Name }, "Id", "BrandName",
+                    consumable.ConsumableTypeId);
             return View(consumable);
         }
 
@@ -93,7 +105,8 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Quantity,Treshold,ConsumableTypeId")] Consumable consumable)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("Id,Quantity,Treshold,ConsumableTypeId")] Consumable consumable)
         {
             if (id != consumable.Id)
             {
@@ -104,7 +117,12 @@ namespace archi_company_mvc.Controllers
             {
                 try
                 {
-                    _context.Update(consumable);
+                    var entity =
+                        await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == consumable.Id.ToString());
+                    _context.Consumable.Update(consumable);
+                    await _context.SaveChangesAsync();
+                    entity.setEntitySearchTags(consumable);
+                    _context.Entities.Update(entity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -118,9 +136,15 @@ namespace archi_company_mvc.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConsumableTypeId"] = new SelectList(from x in _context.ConsumableType select new {x.Id, x.Name, x.Brand, BrandName = x.Brand + " " + x.Name}, "Id", "BrandName", consumable.ConsumableTypeId);
+
+            ViewData["ConsumableTypeId"] =
+                new SelectList(
+                    from x in _context.ConsumableType
+                    select new { x.Id, x.Name, x.Brand, BrandName = x.Brand + " " + x.Name }, "Id", "BrandName",
+                    consumable.ConsumableTypeId);
             return View(consumable);
         }
 
@@ -149,7 +173,9 @@ namespace archi_company_mvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var consumable = await _context.Consumable.FindAsync(id);
+            var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == consumable.Id.ToString());
             _context.Consumable.Remove(consumable);
+            _context.Entities.Remove(entity);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

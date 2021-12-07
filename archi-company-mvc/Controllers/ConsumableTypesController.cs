@@ -61,6 +61,8 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(consumableType);
                 await _context.SaveChangesAsync();
+                _context.Entities.Add(new Entity(consumableType.Id.ToString(), "ConsumableTypes", consumableType,consumableType.GetController(),consumableType.GetType().Name + ": "+consumableType.Name));
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(consumableType);
@@ -98,7 +100,11 @@ namespace archi_company_mvc.Controllers
             {
                 try
                 {
+                    var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == consumableType.Id.ToString());
                     _context.Update(consumableType);
+                    await _context.SaveChangesAsync(); 
+                    entity.setEntitySearchTags(consumableType);
+                    _context.Entities.Update(entity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -141,7 +147,9 @@ namespace archi_company_mvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var consumableType = await _context.ConsumableType.FindAsync(id);
+            var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
             _context.ConsumableType.Remove(consumableType);
+            _context.Entities.Remove(entity);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
