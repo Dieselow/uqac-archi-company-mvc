@@ -31,7 +31,7 @@ namespace archi_company_mvc.Data
                 .ToListAsync();
             foreach (var entity in entities)
             {
-             responses.Add(new EntityAutocompleteResponse(entity.EntityId, baseUrl + "/" + entity.ControllerName + "/Details/" + entity.EntityId));   
+             responses.Add(new EntityAutocompleteResponse(entity.EntityId, baseUrl + "/" + entity.ControllerName + "/Details/" + entity.EntityId,entity.keyEntityName));   
             }
 
             return responses;
