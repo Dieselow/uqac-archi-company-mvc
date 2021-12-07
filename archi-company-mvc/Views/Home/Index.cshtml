@@ -3,7 +3,9 @@
 }
 @model archi_company_mvc.Controllers.EntityAutocompleteResponse  
 
-<script type="text/javascript">    
+@if (User.IsInRole("Admin"))
+{
+    <script type="text/javascript">    
     $(document).ready(function () {    
         $("#Search").autocomplete({
               source: function (request, response) {    
@@ -50,6 +52,7 @@
         </div>
 
     </div>
+}
 }
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
