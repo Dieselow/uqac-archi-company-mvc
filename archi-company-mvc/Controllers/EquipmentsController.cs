@@ -1,6 +1,4 @@
 using System;
-using System.Reflection;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using archi_company_mvc.Data;
@@ -8,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 
 namespace archi_company_mvc.Controllers
 {
+    [Authorize(Roles = "Admin,Secretary")]
     public class EquipmentsController : Controller
     {
         private readonly DatabaseContext _context;
@@ -21,7 +21,6 @@ namespace archi_company_mvc.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Secretary")]
         // GET: Equipments
         public async Task<IActionResult> Index(string searchString, string searchProperty)
         {
@@ -42,7 +41,6 @@ namespace archi_company_mvc.Controllers
                                         .ToListAsync());
         }
 
-        // GET: Equipments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -61,7 +59,6 @@ namespace archi_company_mvc.Controllers
             return View(equipment);
         }
 
-        // GET: Equipments/Create
         public IActionResult Create()
         {
             ViewBag.Rooms = new SelectList(_context.Room.ToList(), "Id", "Name");
@@ -69,9 +66,6 @@ namespace archi_company_mvc.Controllers
             return View();
         }
 
-        // POST: Equipments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,InstallationDate,RoomId,EquipmentTypeId")] Equipment equipment)
@@ -87,7 +81,6 @@ namespace archi_company_mvc.Controllers
             return View(equipment);
         }
 
-        // GET: Equipments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -105,9 +98,6 @@ namespace archi_company_mvc.Controllers
             return View(equipment);
         }
 
-        // POST: Equipments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,InstallationDate,RoomId,EquipmentTypeId")] Equipment equipment)
@@ -144,7 +134,6 @@ namespace archi_company_mvc.Controllers
             return View(equipment);
         }
 
-        // GET: Equipments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -163,7 +152,6 @@ namespace archi_company_mvc.Controllers
             return View(equipment);
         }
 
-        // POST: Equipments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -1,18 +1,19 @@
-using System;
-using System.Collections.Generic;
 using archi_company_mvc.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace archi_company_mvc.Controllers
 {
+    [Authorize(Roles = "Admin,Secretary")]
     public class ConsumableTypesController : Controller
     {
         private readonly DatabaseContext _context;
+
 
         public ConsumableTypesController(DatabaseContext context)
         {

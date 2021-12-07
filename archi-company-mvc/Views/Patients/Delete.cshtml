@@ -15,7 +15,12 @@
             @Html.DisplayNameFor(model => model.PrimaryDoctor)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrimaryDoctor.Id)
+            @{
+                    var Firstname = Model.PrimaryDoctor != null ? Model.PrimaryDoctor.FirstName + " " : "";
+                    var LastName = Model.PrimaryDoctor != null ? Model.PrimaryDoctor.LastName : "";
+                    var displayString = Firstname + LastName;
+            }
+            @Html.DisplayFor(modelItem => displayString)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.HealthFile)

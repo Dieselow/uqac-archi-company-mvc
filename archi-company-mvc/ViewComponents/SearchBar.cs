@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +9,10 @@ namespace archi_company_mvc.ViewComponents
 {
     public class SearchBar : ViewComponent
     {
+
+        public SearchBar()
+        {
+        }
 
         public IViewComponentResult Invoke(IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> properties, string searchString)
         {   

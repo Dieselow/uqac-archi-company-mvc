@@ -1,7 +1,4 @@
-using System;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using archi_company_mvc.Data;
 using archi_company_mvc.Helpers;

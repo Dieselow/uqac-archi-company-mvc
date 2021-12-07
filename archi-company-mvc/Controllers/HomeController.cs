@@ -1,12 +1,11 @@
-﻿
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using archi_company_mvc.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using archi_company_mvc.Models;
 using Controller = Microsoft.AspNetCore.Mvc.Controller;
-using Microsoft.AspNetCore.Mvc;
 
 namespace archi_company_mvc.Controllers
 {

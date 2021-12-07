@@ -1,14 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Collections;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Reflection;
 using System.Linq.Expressions;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
 namespace archi_company_mvc.Models

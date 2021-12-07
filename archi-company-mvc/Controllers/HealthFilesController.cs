@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using archi_company_mvc.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using archi_company_mvc.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -15,46 +12,16 @@ namespace archi_company_mvc.Controllers
     public class HealthFilesController : Controller
     {
         private readonly DatabaseContext _context;
-        private readonly UserManager<User> _userManager;
 
-        public HealthFilesController(DatabaseContext context, UserManager<User> userManager)
+        public HealthFilesController(DatabaseContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
-        // GET: HealthFiles
-        [Authorize(Roles = "Caregiver")]
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.HealthFile.ToListAsync());
-        }
-
-        // GET: HealthFiles/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var healthFile = await _context.HealthFile
-                .FirstOrDefaultAsync(m => m.Id == id);
-            /**  var currentCaregiver = _userManager.GetUserAsync(HttpContext.User);
-              if (currentCaregiver.Id.ToString() == healthFile.Patient.PrimaryDoctorId)
-              {
-                  
-              }**/
-            if (healthFile == null)
-            {
-                return NotFound();
-            }
-
-            return View(healthFile);
-        }
 
         // GET: HealthFiles/Create
-        public IActionResult Create()
+        [Authorize(Roles = "Caregiver, Admin")]
+        public IActionResult Create(string patientId)
         {
             return View();
         }
@@ -64,23 +31,25 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(
-            [Bind("Id,Medications,ChronicConditions,EmergencyContact")] HealthFile healthFile)
+        [Authorize(Roles = "Caregiver, Admin")]
+        public async Task<IActionResult> Create([Bind("Medications,ChronicConditions,EmergencyContact")] HealthFile healthFile, string Id)
         {
             if (ModelState.IsValid)
             {
+                healthFile.PatientId = Id;
                 _context.Add(healthFile);
                 await _context.SaveChangesAsync();
                 _context.Entities.Add(new Entity(healthFile.Id.ToString(), "Healthfile", healthFile,
                     healthFile.GetController(), healthFile.GetType().Name + ": " + healthFile.Patient.UserName));
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Redirect(Url.Action("Index", "Patients"));
             }
 
             return View(healthFile);
         }
 
         // GET: HealthFiles/Edit/5
+        [Authorize(Roles = "Caregiver, Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -102,8 +71,8 @@ namespace archi_company_mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,
-            [Bind("Id,Medications,ChronicConditions,EmergencyContact")] HealthFile healthFile)
+        [Authorize(Roles = "Caregiver, Admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Medications,ChronicConditions,EmergencyContact,PatientId")] HealthFile healthFile)
         {
             if (id != healthFile.Id)
             {
@@ -131,43 +100,12 @@ namespace archi_company_mvc.Controllers
                     {
                         throw;
                     }
-                }
-
-                return RedirectToAction(nameof(Index));
+                }//int patientID=healthFile.Patient.Id; -- non fonctionnel.
+                //return Redirect(Url.Action("Details", "Patients")+"/"+patientID); -- pour revenir directement sur les d�tails d'un patient.
+                return Redirect(Url.Action("Index", "Patients"));
             }
 
             return View(healthFile);
-        }
-
-        // GET: HealthFiles/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var healthFile = await _context.HealthFile
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (healthFile == null)
-            {
-                return NotFound();
-            }
-
-            return View(healthFile);
-        }
-
-        // POST: HealthFiles/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var healthFile = await _context.HealthFile.FindAsync(id);
-            var entity = await _context.Entities.FirstOrDefaultAsync(e => e.EntityId == id.ToString());
-            _context.Entities.Remove(entity);
-            _context.HealthFile.Remove(healthFile);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool HealthFileExists(int id)
