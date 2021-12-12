@@ -33,7 +33,6 @@ namespace archi_company_mvc
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
-            services.AddScoped<ISearchRepository, SearchRepository>();
 
             services.ConfigureApplicationCookie(options =>
             {
