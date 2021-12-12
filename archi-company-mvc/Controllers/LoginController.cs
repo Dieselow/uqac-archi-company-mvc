@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using archi_company_mvc.Constants;
 using archi_company_mvc.Data;
 using archi_company_mvc.Helpers;
 using archi_company_mvc.Models;
@@ -12,11 +13,13 @@ namespace archi_company_mvc.Controllers
     {
         private readonly SignInManager<User> _signInManager;
         private readonly DatabaseContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public LoginController(DatabaseContext context, SignInManager<User> signInManager)
+        public LoginController(DatabaseContext context, SignInManager<User> signInManager, UserManager<User> userManager)
         {
             _context = context;
             _signInManager = signInManager;
+            _userManager = userManager;
         }
         public ActionResult Login()
         {
@@ -44,6 +47,11 @@ namespace archi_company_mvc.Controllers
                         if (user.GetType() == typeof(Patient))
                         {
                             return RedirectToAction(actionName:user.GetDefaultAction(),user.GetController(), new{id = user.Id });    
+                        }
+
+                        if (await _userManager.IsInRoleAsync(user,Roles.Admin.ToString()))
+                        {
+                            return RedirectToAction("Index", "Home");
                         }
                         return RedirectToAction(actionName:user.GetDefaultAction(),user.GetController());   
                     }
