@@ -45,7 +45,6 @@ namespace archi_company_mvc.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
-
             var request = from x in _context.Consumable where x.TicketId == null select new {x.Id, x.Quantity,  x.ConsumableType.Name, x.ConsumableType.Brand, FinalName = x.ConsumableType.Brand + " " + x.ConsumableType.Name + " : " + x.Quantity}; 
             ViewData["ConsumableList"] = new MultiSelectList(request, "Id","FinalName");
             return View();
@@ -58,7 +57,14 @@ namespace archi_company_mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,RequestDate,EquipmentTypeId,ConsumablesIds,Name")] Ticket ticket)
         {
-            if (ModelState.IsValid)
+            if (ticket.ConsumablesIds == null)
+            {
+                ModelState.AddModelError(string.Empty, "No consumables in ticket.");
+                var request = from x in _context.Consumable where x.TicketId == null select new {x.Id, x.Quantity,  x.ConsumableType.Name, x.ConsumableType.Brand, FinalName = x.ConsumableType.Brand + " " + x.ConsumableType.Name + " : " + x.Quantity}; 
+                ViewData["ConsumableList"] = new MultiSelectList(request, "Id","FinalName");
+                return View();
+            }
+            else if (ModelState.IsValid)
             {
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
@@ -76,7 +82,6 @@ namespace archi_company_mvc.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
             return View(ticket);
         }
 
