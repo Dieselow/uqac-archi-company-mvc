@@ -41,7 +41,8 @@ namespace archi_company_mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                var check = _context.Patient.FirstOrDefault(s => s.Email == patient.Email);
+                var check = _context.Patient?.FirstOrDefault(s => s.Email == patient.Email ||
+                s.UserName==patient.UserName);
                 if (check == null)
                 {
                     patient.PasswordHash = _userManager.PasswordHasher.HashPassword(patient, patient.Password);
@@ -53,7 +54,7 @@ namespace archi_company_mvc.Controllers
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
                 }
 
-                ViewBag.error = "Email already exists";
+                ViewBag.error = "Email or username not valid";
                 return View();
             }
 
