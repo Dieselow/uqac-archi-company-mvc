@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace archi_company_mvc.Controllers
 {
     public class EntityAutocompleteResponse
