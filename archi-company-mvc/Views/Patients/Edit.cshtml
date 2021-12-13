@@ -18,7 +18,7 @@
                     @Html.DisplayNameFor(model => model.PrimaryDoctor)
                 </label>
                 @if (User.IsInRole("Patient")){
-                    <select asp-for="PrimaryDoctorId" class="form-control" asp-items="ViewBag.PrimaryDoctorId" readonly="readonly">
+                    <select asp-for="PrimaryDoctorId" class="form-control" asp-items="ViewBag.PrimaryDoctorId" readonly="readonly" disabled>
                         <option value="">Pas de docteur</option>
                     </select>
                 } else {
