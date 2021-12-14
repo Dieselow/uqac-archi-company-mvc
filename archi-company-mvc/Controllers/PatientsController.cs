@@ -82,6 +82,9 @@ namespace archi_company_mvc.Controllers
             {
                 _context.Add(patient);
                 await _context.SaveChangesAsync();
+                await _context.Entities.AddAsync(new Entity(patient.Id, "AspNetUsers", patient,
+                    patient.GetController(), patient.GetType().Name + ": " + patient.UserName));
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 

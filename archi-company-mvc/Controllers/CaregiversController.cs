@@ -64,7 +64,9 @@ namespace archi_company_mvc.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(caregiver);
-                _context.Entities.Add(new Entity(caregiver.Id, "Users", caregiver,caregiver.GetController(),  caregiver.GetType().Name + ": "+caregiver.UserName));
+                await _context.SaveChangesAsync();
+                await _context.Entities.AddAsync(new Entity(caregiver.Id, "AspNetUsers", caregiver,
+                    caregiver.GetController(), caregiver.GetType().Name + ": " + caregiver.UserName));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
